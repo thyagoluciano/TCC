@@ -1,0 +1,18 @@
+{
+    "name": "TCC",
+    "version": "0.0.1",
+    "description": "Projeto de Conclusão de Curso - FPU",
+    "scripts": {
+        "start": "nodemon app.js"
+    },
+    "dependencies": {
+        "express": "~3.4.8",
+        "ejs": "~0.8.5",
+        "nodemon": "~1.0.13",
+        "mongoose": "*"
+    },
+    "author": "Thyago Luciano",
+    "url": "http://thyagoluciano.com.br",
+    "email": "me@thyagoluciano.com.br",
+    "license": "free"
+}
