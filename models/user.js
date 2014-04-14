@@ -33,6 +33,20 @@ exports.list = function(req, res){
     });
 };
 
+exports.login = function(req, res){
+    var email = req.params.email;
+    var passw = req.params.password;
+
+    User.findOne({email: email, password: passw}).exec(function(err, users){
+        if(err){
+            console.log("Error: ", err);
+        }else{
+            req.session.usuario = users;
+            res.json(users);
+        }
+    });
+};
+
 /**
  * Busca Usuário pelo ID
  * @param req

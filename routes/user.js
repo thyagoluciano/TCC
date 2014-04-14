@@ -1,25 +1,13 @@
-/**
- * Rota Usuário
- */
 
-var UserModel = require('../models/user');
+module.exports = function(app){
 
-exports.list = function(req, res){
-    UserModel.list(req, res);
-};
+    var user = app.controllers.api.user;
 
-exports.get = function(req, res){
-    UserModel.get(req, res);
-};
+    app.get('/api/users', user.list);
+    app.get('/api/users/:id', user.get);        // Lista Usuário pelo ID
+    app.get('/api/users/:email/:password', user.login);
+    app.post('/api/users', user.create);        // Insere um Usuário no BD
+    app.put('/api/users/:id', user.update);     // Atualiza um Usuário no BD
+    app.delete('/api/users/:id', user.delete);  // Deleta um Usuário no BD
 
-exports.create = function(req, res){
-    UserModel.create(req, res);
-};
-
-exports.update = function(req, res){
-    UserModel.update(req, res);
-};
-
-exports.delete = function(req, res){
-    UserModel.delete(req, res);
 };

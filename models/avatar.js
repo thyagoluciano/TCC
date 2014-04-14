@@ -6,14 +6,30 @@ var mongoose    = connection.mongoose,
     Schema      = mongoose.Schema;
 
 var AvatarSchema  = new Schema({
-    name: {type: String},
+    name: {type: String, unique: true},
     gender: {type: String, default: 'M'},
-    for: {type: Number, min: 0, max: 99, require: true},
-    agi: {type: Number, min: 0, max: 99, require: true},
-    vit: {type: Number, min: 0, max: 99, require: true},
-    int: {type: Number, min: 0, max: 99, require: true},
-    des: {type: Number, min: 0, max: 99, require: true},
-    sor: {type: Number, min: 0, max: 99, require: true},
+    attributes: {
+        for: {type: Number, min: 0, max: 99, require: true},
+        agi: {type: Number, min: 0, max: 99, require: true},
+        vit: {type: Number, min: 0, max: 99, require: true},
+        int: {type: Number, min: 0, max: 99, require: true},
+        des: {type: Number, min: 0, max: 99, require: true},
+        sor: {type: Number, min: 0, max: 99, require: true}
+    },
+    equipment: {
+        weapon: {},
+        torso: {},
+        legs: {},
+        head: {},
+        hands: {},
+        feet: {},
+        belt: {}
+    },
+    position: {
+        px: 0,
+        py: 0
+    },
+    storage:{},
     user: {
         type: Schema.ObjectId,
         ref: 'User'
@@ -67,12 +83,14 @@ exports.create = function(req, res){
     var dados = {
         name:       data.name,
         gender:     data.gender,
-        for:        data.for,
-        agi:        data.agi,
-        vit:        data.vit,
-        int:        data.int,
-        des:        data.des,
-        sor:        data.sor,
+        attributes: {
+            for:        data.for,
+            agi:        data.agi,
+            vit:        data.vit,
+            int:        data.int,
+            des:        data.des,
+            sor:        data.sor
+        },
         user:       data.user
     };
 
