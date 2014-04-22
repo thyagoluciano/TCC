@@ -10,6 +10,8 @@
         "angular-route": "latest",
         "bootstrap": "3.0.3",
         "angular-bootstrap": "0.10.0",
-        "angular-ui-utils": "0.1.0"
+        "angular-ui-utils": "0.1.0",
+        "requirejs": null,
+        "phaser": "~2.0.0"
     }
 }

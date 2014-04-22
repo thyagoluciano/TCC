@@ -47,6 +47,12 @@ exports.login = function(req, res){
     });
 };
 
+exports.logout = function(req, res){
+    var user = req.session.usuario;
+    req.session.destroy();
+    res.json(user);
+};
+
 /**
  * Busca Usuário pelo ID
  * @param req
@@ -64,6 +70,10 @@ exports.get = function(req, res){
                 res.json(users);
             }
         });
+};
+
+exports.getUserSession = function(req, res){
+    res.json(req.session.usuario);
 };
 
 /**

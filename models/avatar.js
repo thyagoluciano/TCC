@@ -8,13 +8,16 @@ var mongoose    = connection.mongoose,
 var AvatarSchema  = new Schema({
     name: {type: String, unique: true},
     gender: {type: String, default: 'M'},
+    sprite: {type: Number},
     attributes: {
-        for: {type: Number, min: 0, max: 99, require: true},
-        agi: {type: Number, min: 0, max: 99, require: true},
-        vit: {type: Number, min: 0, max: 99, require: true},
-        int: {type: Number, min: 0, max: 99, require: true},
-        des: {type: Number, min: 0, max: 99, require: true},
-        sor: {type: Number, min: 0, max: 99, require: true}
+        for: {type: Number, min: 0,     max: 99,    require: true},
+        agi: {type: Number, min: 0,     max: 99,    require: true},
+        vit: {type: Number, min: 0,     max: 99,    require: true},
+        int: {type: Number, min: 0,     max: 99,    require: true},
+        des: {type: Number, min: 0,     max: 99,    require: true},
+        sor: {type: Number, min: 0,     max: 99,    require: true},
+        hp: {type: Number,  min: 100,   max: 9999,  require: true},
+        level: {type: Number,  min: 100,   max: 9999,  require: true},
     },
     equipment: {
         weapon: {},
@@ -38,6 +41,21 @@ var AvatarSchema  = new Schema({
 
 var Avatar          = mongoose.model("Avatar", AvatarSchema);
 
+
+exports.setAvatar = function(req, res){
+    var id = req.params.id;
+
+    Avatar
+        .findOne({_id: id}).exec(function(err, avatar){
+            if(err){
+                console.log(err);
+                res.json(err);
+            }else{
+                req.session.usuario.avatar = avatar;
+                res.json(req.session.usuario);
+            }
+        });
+};
 /**
  * Busca todos os Avatares
  * @param req
@@ -72,6 +90,17 @@ exports.get = function(req, res){
         });
 };
 
+exports.getByUser = function(req, res){
+    var id = req.params.id;
+
+    Avatar.find({user: id}).exec(function(err, avatar){
+        if(err){
+            res.json(err);
+        }else{
+            res.json(avatar);
+        }
+    });
+};
 /**
  * Insere um Avatar no BD
  * @param req
@@ -79,18 +108,13 @@ exports.get = function(req, res){
  */
 exports.create = function(req, res){
     var data = req.body;
+    data.attributes.level = 1;
 
     var dados = {
         name:       data.name,
         gender:     data.gender,
-        attributes: {
-            for:        data.for,
-            agi:        data.agi,
-            vit:        data.vit,
-            int:        data.int,
-            des:        data.des,
-            sor:        data.sor
-        },
+        attributes: data.attributes,
+        sprite: 1,
         user:       data.user
     };
 

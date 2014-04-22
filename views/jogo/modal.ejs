@@ -1,0 +1,45 @@
+<div>
+    <div class="modal-header">
+        <h5>Novo Personagem</h5>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input type="text" name="nome" id="nome" data-ng-model="avatar.name">
+            </div>
+            <div class="form-group">
+                <label for="forca">Força:</label>
+                <input type="range" data-ng-model="avatar.attributes.for" min="0" max="9">  9
+            </div>
+            <div class="form-group">
+                <label for="agilidade">Agilidade:</label>
+                <input type="range" data-ng-model="avatar.attributes.agi" min="0" max="9">  9
+            </div>
+            <div class="form-group">
+                <label for="vitalidade">Vitalidade:</label>
+                <input type="range" data-ng-model="avatar.attributes.vit" min="0" max="9">  9
+            </div>
+            <div class="form-group">
+                <label for="inteligencia">Inteligência:</label>
+                <input type="range" data-ng-model="avatar.attributes.int" min="0" max="9">  9
+            </div>
+            <div class="form-group">
+                <label for="destreza">Destreza:</label>
+                <input type="range" data-ng-model="avatar.attributes.des" min="0" max="9">  9
+            </div>
+            <div class="form-group">
+                <label for="sorte">Sorte:</label>
+                <input type="range" data-ng-model="avatar.attributes.sor" min="0" max="9">  9
+            </div>
+            <p>{{msg}}: {{total}}</p>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" data-ng-click="ok()" data-ng-disabled="disabled">OK</button>
+        <button class="btn btn-warning" data-ng-click="cancel()">Cancel</button>
+    </div>
+</div>
+
+
+

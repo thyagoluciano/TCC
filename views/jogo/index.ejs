@@ -1,9 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title><%= title %></title>
-</head>
-<body>
-    <h1>JOGO</h1>
-</body>
-</html>
+<% include include/header %>
+
+<div class="container" data-ng-controller="jogoCtrl">
+    {{i}}
+    <div data-ng-view>
+
+    </div>
+
+    <div ng-show="selected">Selection from a modal: {{ selected }}</div>
+    <div ng-show="pontosAtributos">Pontos: {{ pontosAtributos }}</div>
+</div>
+
+<% include include/foot %>

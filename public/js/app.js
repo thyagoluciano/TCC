@@ -2,12 +2,10 @@ angular.module('tccApp', ['ngRoute', 'ngResource', 'tccApp.controllers'])
     .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){
         $routeProvider
             .when('/', {
-                templateUrl: 'angular/chat/login'
-//                ,controller: 'loginCtrl'
+                templateUrl: 'angular/jogo/login'
             })
-            .when('/chat', {
-                templateUrl: 'angular/chat/index'
+            .when('/jogo', {
+                templateUrl: 'angular/jogo/avatar'
             });
-
             //$locationProvider.html5Mode(true);
     }]);

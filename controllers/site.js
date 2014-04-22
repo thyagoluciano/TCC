@@ -20,6 +20,11 @@ module.exports = function(app){
             req.session.destroy();
 
             res.redirect('/');
+        },
+        angular: function(req, res){
+            var diretorio   = req.params.diretorio;
+            var name        = req.params.name;
+            res.render(diretorio + '/' + name);
         }
     };
 

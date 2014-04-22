@@ -1,0 +1,56 @@
+<!-- Socket.io -->
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+<!-- PhaserJS -->
+<script type="text/javascript" src="/lib/phaser/phaser.min.js"></script>
+<!-- Game -->
+<script type="text/javascript" src="/js/play/states/Boot.js"></script>
+<script type="text/javascript" src="/js/play/states/Preloader.js"></script>
+<script type="text/javascript" src="/js/play/states/MainMenu.js"></script>
+<script type="text/javascript" src="/js/play/states/Game.js"></script>
+<script type="text/javascript" src="/js/play/class/Player.js"></script>
+<!--<script type="text/javascript" src="/js/play/class/Socket.js"></script>-->
+
+<script type="text/javascript">
+    window.onload = function(){
+
+//        var socket = io.connect('http://localhost:3000');
+//
+//        socket.on('news', function(data){
+//            console.log(data);
+//
+//            socket.emit('my other event', {my: 'data'});
+//        });
+
+        var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'gameContainer');
+
+        game.state.add('Boot', tccGame.Boot);
+        game.state.add('Preloader', tccGame.Preloader);
+        game.state.add('MainMenu', tccGame.MainMenu);
+        game.state.add('Game', tccGame.Game);
+
+        // Now start the Boot state
+        game.state.start('Boot');
+
+        console.log('start');
+    };
+</script>
+
+<!-- AngularJS -->
+<script type="text/javascript" src="/lib/angular/angular.min.js"></script>
+<script type="text/javascript" src="/lib/angular-cookies/angular-cookies.min.js"></script>
+<script type="text/javascript" src="/lib/angular-resource/angular-resource.min.js"></script>
+<script type="text/javascript" src="/lib/angular-route/angular-route.min.js"></script>
+
+<!-- Angular UI -->
+<script type="text/javascript" src="/lib/angular-bootstrap/ui-bootstrap.js"></script>
+<script type="text/javascript" src="/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script type="text/javascript" src="/lib/angular-ui-utils/ui-utils.min.js"></script>
+
+<!-- Application -->
+<script type="text/javascript" src="/js/play/app.js"></script>
+<script type="text/javascript" src="/js/services.js"></script>
+<script type="text/javascript" src="/js/play/playControllers.js"></script>
+
+</body>
+</html>
