@@ -1,28 +1,39 @@
-tccGame.MainMenu = function(game){
-    this.music      = null;
-    this.playButton = null;
-};
+(function(){
+    'use strict';
 
-tccGame.MainMenu.prototype = {
-    create: function(){
-        this.backgroundColor = '#000';
+    GameCtrl.MainMenu = function(){
+        this.music = null;
+        this.playButton = null;
+    };
 
-        var textstyle = {
-            font: '20px "arcadeclasic"',
-            fill: '#fff',
-            align: 'center'
-        };
+    GameCtrl.MainMenu.prototype = {
+        preload: function(){
 
-        this.startText = this.game.add.text(this.game.width / 2 - 100, this.game.height / 2, 'Press  ENTER  to start playing', textstyle);
+        },
 
-        this.enterPressed=false;
-    },
+        create: function(){
+            this.backgroundColor = '#000';
 
-    update: function(){
-        if(!this.enterPressed && this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)){
-            this.enterPressed=true;
-            this.state.start('Game');
+            var textstyle = {
+                font : '26px "arcadeclasic"',
+                fill : '#fff',
+                align : 'center'
+            };
+            //var textobj =
+            this.startText=this.game.add.text(this.game.width / 2 - 150, this.game.height / 2, 'Press  ENTER  to start playing', textstyle);
+
+
+
+
+            this.enterPressed=false;
+        },
+
+        update: function(){
+            if(!this.enterPressed && this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)){
+                this.enterPressed=true;
+                this.game.state.start('Game');
+            }
         }
-    }
+    };
 
-};
+})();

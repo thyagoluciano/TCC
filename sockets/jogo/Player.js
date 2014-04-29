@@ -1,29 +1,51 @@
-var Player = function(usuario){
+var Player = function(){
 
-    var user = usuario;
+    var user = {};
 
-    var getUsuario = function(){
-        return usuario;
+    var setUser = function(data){
+        for(var k in data ){
+            user[k] = data[k];
+        }
+    }
+
+    var getUser = function(){
+        return user;
     };
 
-    var setPosition = function(position){
-        user.position.x = position.x;
-        user.position.y = position.y;
+    var setPosition = function(data){
+        user.position.x = data.x;
+        user.position.y = data.y;
     };
 
     var getPosition = function(){
         return user.position;
     };
 
+    var setId = function(id){
+        user.id = id
+    }
+
     var getId = function(){
-        return user._sessionId;
+        return user.id;
+    };
+
+    var setDirection = function(direction){
+        user.direction = direction;
+    }
+
+    var getDirection = function(){
+        return user.direction;
     }
 
     return {
         getId: getId,
-        getUsuario: getUsuario,
+        setId: setId,
+        setUser: setUser,
+        getUser: getUser,
         setPosition: setPosition,
-        getPosition: getPosition
+        getPosition: getPosition,
+        setDirection: setDirection,
+        getDirection: getDirection
     };
 };
 

@@ -1,110 +1,116 @@
-tccGame.Game = function (game) {
+(function(){
+    'use strict';
 
-    //	When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
-    this.game;		//	a reference to the currently running game
-    this.add;		//	used to add sprites, text, groups, etc
-    this.camera;	//	a reference to the game camera
-    this.cache;		//	the game cache
-    this.input;		//	the global input manager (you can access this.input.keyboard, this.input.mouse, as well from it)
-    this.load;		//	for preloading assets
-    this.math;		//	lots of useful common math operations
-    this.sound;		//	the sound manager - add a sound, play one, set-up markers, etc
-    this.stage;		//	the game stage
-    this.time;		//	the clock
-    this.tweens;    //  the tween manager
-    this.state;	    //	the state manager
-    this.world;		//	the game world
-    this.particles;	//	the particle manager
-    this.physics;	//	the physics manager
-    this.rnd;		//	the repeatable random number generator
+    GameCtrl.Game = function(){
+        this.socket = null;
+        this.localPlayer = null;
+        this.remotePlayer = [];
+        var _this;
+    };
 
-    this.cursors;
+    GameCtrl.Game.prototype = {
 
-    //	You can use any of these from any function within this State.
-    //	But do consider them as being 'reserved words', i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
+        /**
+         * Configura Socket
+         */
+        _startSocket: function(){
+            this.socket = io.connect('http://localhost:3000');
+            this._setEventHandlers();
+        },
 
-    this.socket;
-    this.player;
-};
+        _setEventHandlers: function(){
 
-tccGame.Game.prototype = {
+            var _this = this;
 
-    create: function () {
-        this.socket = io.connect('http://localhost:3000');
+            //noinspection BadExpressionStatementJS
+            this.socket.on('conn', function(data){
+                _this._onConnect(data);
+            })[_this];
 
-        this.physics.startSystem(Phaser.Physics.P2JS);
+            this.socket.on('disconnect',    this._onDisconnect);
 
-        // Inicializa a comunicação via Socket
-        this.socket.on('connect', function(){
-            console.log('Connectado ao servidor socket');
-        });
+            //noinspection BadExpressionStatementJS
+            this.socket.on('local player',  function(data){
+                _this._onLocalPlayer(data);
+            })[_this];
 
-        this.socket.on('new player', function(data){
-            this.player = new Player(this.game, this.socket);
-            this.player.create();
-        });
+            //noinspection BadExpressionStatementJS
+            this.socket.on('remote player',  function( data ){
+                _this._onRemotePlayer( data );
+            })[_this];
 
+            this.socket.on('remove player', function(){});
 
+            this.socket.on('move player', function( data){
+                _this._onMovePlayer( data );
+            })[_this];
+        },
 
+        _onConnect: function( data ){
+            console.log('Connectado id.: ' + data.id);
+            this.socket.emit('new player');
+        },
 
-        this.cursors = this.input.keyboard.createCursorKeys();
-    },
+        _onDisconnect: function(){
 
-    update: function () {
-        this.player.update();
-//        if(tccGame.player.getStart()){
-//            tccGame.player.update();
-//        }
-//
-//        if (this.cursors.left.isDown)
-//        {
-//            tccGame.player.setDirection('left');
-//        }
-//        else if (this.cursors.right.isDown)
-//        {
-//            tccGame.player.setDirection('right');
-//        }else if(this.cursors.up.isDown){
-//            tccGame.player.setDirection('up');
-//        }else if(this.cursors.down.isDown){
-//            tccGame.player.setDirection('down');
-//        }else{
-//            tccGame.player.setDirection('null');
-//        }
-//
-//        this.socket.emit('move player', {direction: tccGame.player.getDirection()});
-//
-//        this.socket.on('move player', function(data){
-//            var movePlayer = this.playerById(data.id);
-//
-//            if(!movePlayer){
-//                console.log("Player not found: " + data.id );
-//                return;
-//            }
-//
-//            movePlayer.setDirection(data.direction);
-//        });
-    },
+        },
 
-    render: function(){
-        this.player.render();
-    },
+        _onLocalPlayer: function( data ){
+            this.localPlayer = new Player(this.game, this.socket, data.user);
+            this.localPlayer.create();
+        },
 
-    quitGame: function (pointer) {
-        //	Here you should destroy anything you no longer need.
-        //	Stop music, delete sprites, purge caches, free resources, all that good stuff.
+        _onRemotePlayer: function( data ){
+            var remotePlayer = new Player(this.game, this.socket, data.user);
+                remotePlayer.create();
 
-        //	Then let's go back to the main menu.
-        this.state.start('MainMenu');
-    },
+            this.remotePlayer.push(remotePlayer);
+        },
 
-    // Find player by ID
-    playerById: function(id){
-        var i;
-        for (i = 0; i < tccGame.remotePlayer.length; i++) {
-            if (tccGame.remotePlayer[i].getId() == id)
-                return tccGame.remotePlayer[i];
-        };
-        return false;
-    }
+        _onMovePlayer: function( data ){
 
-};
+            var newRemotePlayer = this.playerById(data.id);
+
+            if(!newRemotePlayer){
+                util.log('Move Player not found: ' + data.id);
+                return;
+            };
+
+            newRemotePlayer.setDirection(data.direction);
+
+            newRemotePlayer.movePlayer();
+        },
+
+        _onRemovePlayer: function(){
+
+        },
+
+        create: function(){
+            this._startSocket();
+        },
+
+        update: function(){
+            if(this.localPlayer){
+                this.localPlayer.update();
+            }
+        },
+
+        render: function(){
+            if(this.localPlayer){
+                this.localPlayer.render();
+            }
+        },
+
+        // Find player by ID
+        playerById: function( id ) {
+            var i;
+            for (i = 0; i < this.remotePlayer.length; i++) {
+                if (this.remotePlayer[i].getId() == id)
+                    return this.remotePlayer[i];
+            };
+
+            return false;
+        }
+    };
+
+})();

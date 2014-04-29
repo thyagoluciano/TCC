@@ -1,36 +1,44 @@
-var tccGame = {
-    player: false,
-    remotePlayer: []
+var GameCtrl = {
+    orientated: false
 };
 
-tccGame.Boot = function(game){};
+(function(){
+    'use strict';
 
-tccGame.Boot.prototype = {
-    preload: function(){
-        this.load.image('preloaderBackground', 'assets/images/progress_bar_background.png');
-        this.load.image('preloaderBar', 'assets/images/progress_bar.png');
-    },
+    GameCtrl.Boot = function(){};
 
-    create: function(){
-        // Como o game não é multi-touch setamos para 1;
-        this.input.maxPointers = 1;
+    GameCtrl.Boot.prototype = {
 
-        // Phaser pausa o jogo automaticamente quando perde o foco no browser, Vamos desabilitar isto.
-        this.stage.disableVisibilityChange = true;
 
-        if(this.game.device.desktop){
-            this.scale.pageAlignHorizontally = true;
-        }else{
-            this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-            this.scale.minWidth = 480;
-            this.scale.minHeight = 260;
-            this.scale.maxWidth = 1024;
-            this.scale.maxHeight = 768;
-            this.scale.forceLandscape = true;
-            this.scale.pageAlignHorizontally = true;
-            this.scale.setScreenSize(true);
+        preload: function(){
+            this.load.image('preloaderBackground', 'assets/images/progress_bar_background.png');
+            this.load.image('preloaderBar', 'assets/images/progress_bar.png');
+            this.load.spritesheet('char', 'assets/sprite/hero/sprites_male.png', 64, 64);
+        },
+
+        create: function(){
+            this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
+            this.game.input.maxPointers = 1;
+            this.game.stage.disableVisibilityChange = true;
+
+            this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+
+            this.game.scale.minWidth = 480;
+            this.game.scale.minHeight = 260;
+            this.game.scale.maxWidth = 1024;
+            this.game.scale.maxHeight = 768;
+            this.game.scale.pageAlignHorizontally = true;
+            this.game.scale.pageAlignVertically = true;
+            this.game.scale.setScreenSize(true);
+            this.game.state.start('Preloader');
+        },
+
+        update: function(){
+
         }
-
-        this.state.start('Preloader');
     }
-};
+
+
+
+})();

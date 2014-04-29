@@ -13,26 +13,16 @@
 
 <script type="text/javascript">
     window.onload = function(){
-
-//        var socket = io.connect('http://localhost:3000');
-//
-//        socket.on('news', function(data){
-//            console.log(data);
-//
-//            socket.emit('my other event', {my: 'data'});
-//        });
-
         var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'gameContainer');
 
-        game.state.add('Boot', tccGame.Boot);
-        game.state.add('Preloader', tccGame.Preloader);
-        game.state.add('MainMenu', tccGame.MainMenu);
-        game.state.add('Game', tccGame.Game);
+        game.state.add('Boot',      GameCtrl.Boot);
+        game.state.add('Preloader', GameCtrl.Preloader);
+        game.state.add('MainMenu',  GameCtrl.MainMenu);
+        game.state.add('Game',      GameCtrl.Game);
 
         // Now start the Boot state
         game.state.start('Boot');
 
-        console.log('start');
     };
 </script>
 
