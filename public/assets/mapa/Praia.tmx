@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="tilesheet" tilewidth="32" tileheight="32">
+  <image source="tilesheet.png" width="640" height="3136"/>
+ </tileset>
+ <layer name="Praia" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt1kF1AlAAxECqh3ooHoqH4gE8gOR+F5vDHPLGQq5fl8v36cqEP6cbM/6e7sz4d3ow4/P0Ysb36cOM65+gvyq7/gn6q7Lrn6C/Krv+CfqrsuufoL8qu/4J+quy65+gvyq7/gn6q7Lrn6C/Krv+CfqrsuufoL8qu/4J+quy65+gvyq7/gn6q7Lrn6C/Krv+CfqrsuufoL8qu/4J+quy65+gvyq7/gn6q7Lrn6C/Krv+CfqrsuufoL8qu/4J+quy65+gvyq7/gn6q7Lrn6C/Krv+CfqrsuufoL8qu/4J+quy65+gvyq7/gn6q7Lrn6C/Krv+CfqrsuufoL8qu/4J+quy65+gvyq7/gn6q7Lrn6C/Krv+CfqrsuufoL8qu/4J+quy65+gvyq7/gn6q7Lrn6C/Krv+CfqrsuufoL8q+w+QREz7
+  </data>
+ </layer>
+ <layer name="Casas" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt2slRHEEUhOEySAIkHCgWgQPsOICEBA6A2BxgxwF2HBBIQq6R1z5M0KOq6cqu+L+IPE5dJqLfi4wXAtB/H5SPypgyrkwon5TPyqTx27WKypQyrcwos8oXZU6ZN367VgvKorKkLCsryqqypqwbv12rDeWr8k3ZVL4rP5QtZdv47VrtKLvKT2VP2VcOlEPlyPTtmufSsXKinCpnyrlyoVwqV6Zvx1DvXLpWbpRb5U65Vx6UR+XJ9O2a59Iv5Vl5UX4rf5S/yqvyz/Rt5lJT6e/3KGdeH8VQ9vs9ypnXR6W/36OceX1U+vs9ypnXR3y/vfD99sL320vK97v0roymGOrtOvqo9K6MptK7MprYlfPINYfZlfOIIc8cZlfOI9ccpuvIgznshTnshTnshTnspfQcpvfyEgO9lxN6Ly/s217Yt72wb3th3/ZSet8GAAB4D/2clxja9XP8b91o28/FQK/ahbb9HL1qN9r2c/Sq3Wjbz9GrdqNtP0ev2o22/Ry9qhd6VQBACfQtXmKgb3FC3+KFvsVLzr6FWZQuZ98SA7MoVc6+hVmULmffwizyQvfvhe7fC92/F7p/AAAAAAAAAAAAABhe6m0ht4l5xZB2W5j6ezSl3hZym5hX6m0ht4l5pd4WcpuYV+ptIbeJg/3PrpN6W8ht4mAxDL/rpN4Wcps4GLuOF3YdL+w6Xth1vLDreGHXAVCTN7ESm1A=
+  </data>
+ </layer>
+ <layer name="Colisao" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt2UEKwjAUQMGK3sGC97+nLhRcKMVqyVNnIHRb/iMkkGkClsxPFmPo0aJHy1KP/W6aDrsRf/aflnocLy3mFT3su3W2mpse6+jxH/QY59GZr8c4j858PVr0AICxnMUterTo0aJHix4terToAQDQ4F7WMt999RjP/mjRo0WPFj1a9AAAAAAAAAB4jXfWFj1a9GjRo+WTPbR9nx4tevwuPVr0aNGjRQ8AAAAAAAAAvt27b9/ezj9LjxY9WvRo0aNFj+2smY0e2zGbFj1a9GjRo0WPltv8T9elx1h6AL/iDNB7JGk=
+  </data>
+ </layer>
+</map>

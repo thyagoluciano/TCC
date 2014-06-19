@@ -3,17 +3,32 @@
 
 <!-- PhaserJS -->
 <script type="text/javascript" src="/lib/phaser/phaser.min.js"></script>
+<script type="text/javascript" src="/lib/phaser/PathFinderPlugin.js"></script>
+<script type="text/javascript" src="/lib/phaser/easystar-0.1.5.js"></script>
+
 <!-- Game -->
 <script type="text/javascript" src="/js/play/states/Boot.js"></script>
 <script type="text/javascript" src="/js/play/states/Preloader.js"></script>
 <script type="text/javascript" src="/js/play/states/MainMenu.js"></script>
 <script type="text/javascript" src="/js/play/states/Game.js"></script>
+
+<script type="text/javascript" src="/js/play/class/CalcAttr.js"></script>
+
+<!-- Cliente Socket -->
+<script type="text/javascript" src="/js/play/socket/Connect.js"></script>
+<script type="text/javascript" src="/js/play/socket/PlayerSocket.js"></script>
+
+<!--<script type="text/javascript" src="/js/play/class/Cliente.js"></script>-->
+<script type="text/javascript" src="/js/play/class/Mapa.js"></script>
 <script type="text/javascript" src="/js/play/class/Player.js"></script>
-<!--<script type="text/javascript" src="/js/play/class/Socket.js"></script>-->
+<script type="text/javascript" src="/js/play/class/Enemy.js"></script>
+<script type="text/javascript" src="/js/play/class/Dagger.js"></script>
+<script type="text/javascript" src="/js/play/class/Itens.js"></script>
+<script type="text/javascript" src="/js/play/class/Camera.js"></script>
 
 <script type="text/javascript">
     window.onload = function(){
-        var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'gameContainer');
+        var game = new Phaser.Game(800, 600, Phaser.AUTO, 'gameContainer');
 
         game.state.add('Boot',      GameCtrl.Boot);
         game.state.add('Preloader', GameCtrl.Preloader);
@@ -25,6 +40,13 @@
 
     };
 </script>
+
+<!-- jQuery -->
+<script type="text/javascript" src="/lib/jquery/dist/jquery.min.js"></script>
+
+<!-- JS -->
+<script type="text/javascript" src="/resource/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/resource/js/nav.js"></script>
 
 <!-- AngularJS -->
 <script type="text/javascript" src="/lib/angular/angular.min.js"></script>
@@ -44,3 +66,6 @@
 
 </body>
 </html>
+
+
+

@@ -17,7 +17,7 @@ var AvatarSchema  = new Schema({
         des: {type: Number, min: 0,     max: 99,    require: true},
         sor: {type: Number, min: 0,     max: 99,    require: true},
         hp: {type: Number,  min: 100,   max: 9999,  require: true},
-        level: {type: Number,  min: 100,   max: 9999,  require: true},
+        level: {type: Number,  min: 100,   max: 9999,  require: true}
     },
     equipment: {
         weapon: {},
@@ -41,6 +41,9 @@ var AvatarSchema  = new Schema({
 
 var Avatar          = mongoose.model("Avatar", AvatarSchema);
 
+exports.getAvatar = function(){
+    return Avatar;
+};
 
 exports.setAvatar = function(req, res){
     var id = req.params.id;

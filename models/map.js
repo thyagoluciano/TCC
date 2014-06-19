@@ -1,0 +1,117 @@
+'use strict'
+
+var connection = require('./connection');
+
+var mongoose    = connection.mongoose,
+    Schema      = mongoose.Schema;
+
+var MapSchema  = new Schema({
+    name: {type: String, require: true, unique: true},
+    tileWidth: {type: Number, require: true},
+    tileHeight: {type: Number, require: true},
+    file: {type: String, require: true},
+    tilesheet: {},
+    layers: {}
+});
+
+var Map        = mongoose.model("Map", MapSchema);
+
+exports.getMap = function(){
+    return Map;
+};
+
+exports.list = function(req, res){
+    Map.find().exec(function(err, maps){
+        if(err){
+            console.log("Error: ", err);
+        }else{
+            res.json(maps);
+        }
+    });
+};
+
+exports.getByName = function(req, res){
+    var name = req.params.name;
+
+    Map
+        .findOne({name: name}).exec(function(err, maps){
+            if(err){
+                console.log(err);
+                res.json(err);
+            }else{
+                res.json(maps);
+            }
+        });
+};
+
+exports.get = function(req, res){
+    var id = req.params.id;
+
+    Map
+        .findOne({_id: id}).exec(function(err, maps){
+            if(err){
+                console.log(err);
+                res.json(err);
+            }else{
+                res.json(maps);
+            }
+        });
+};
+
+exports.create = function(req, res){
+    var data = req.body;
+
+    var dados = {
+        name:       data.name,
+        tileWidth:  data.tileWidth,
+        tileHeight: data.tileHeight,
+        file:       data.file,
+        tilesheet: data.tilesheet,
+        layers:     data.layers
+    };
+
+    var map = new Map(dados);
+
+    map.save(function(err, data){
+        if(err){
+            res.json(err);
+        }else{
+            res.json(data);
+        }
+    });
+};
+
+/**
+ * Atualiza um Usuário no BD
+ * @param req
+ * @param res
+ */
+exports.update = function(req, res){
+    var id = req.params.id;
+    var data = req.body;
+
+    Map.update({_id: id}, data, function(err, data){
+        if(err){
+            res.json(err);
+        }else{
+            res.json(data);
+        }
+    });
+};
+
+/**
+ * Deleta um Usuário no BD
+ * @param req
+ * @param res
+ */
+exports.delete = function(req, res){
+    var id = req.params.id;
+
+    Map.remove({_id: id}, function(err, data){
+        if(err){
+            res.json(err);
+        }else{
+            res.json(data);
+        }
+    });
+}

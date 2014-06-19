@@ -23,8 +23,6 @@
             this.startText=this.game.add.text(this.game.width / 2 - 150, this.game.height / 2, 'Press  ENTER  to start playing', textstyle);
 
 
-
-
             this.enterPressed=false;
         },
 
