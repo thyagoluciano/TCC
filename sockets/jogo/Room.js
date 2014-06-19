@@ -1,5 +1,6 @@
 function Room(){
     this.peoples = [];
+    this.enemies = [];
 };
 
 Room.prototype = {
@@ -9,6 +10,14 @@ Room.prototype = {
 
     getPeople: function(){
         return this.peoples;
+    },
+
+    addEnemy: function(enemy){
+        this.enemies.push(enemy);
+    },
+
+    getEnemy: function(){
+        return this.enemies;
     }
 };
 

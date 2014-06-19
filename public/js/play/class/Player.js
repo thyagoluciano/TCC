@@ -28,6 +28,8 @@
         create: function(){
             // Hero
             this.player = this.game.add.sprite(this.user.position.x, this.user.position.y, 'char');
+            this.player.id = this.user.socketId;
+            this.player.name = this.user.name;
 
             // Adiciona o over, para auxiliar na batalha.
             this.over = this.game.add.sprite(0, 0, 'over');
@@ -218,7 +220,7 @@
             if(this.player.animations.currentAnim.frame == 5 || this.player.animations.currentAnim.frame == 11 || this.player.animations.currentAnim.frame == 17 || this.player.animations.currentAnim.frame == 23){
                 if(this.attack){
                     this.attack = false;
-                    this.enemy.changeHP(-this.user.attributes.atk);
+                    this.enemy.changeHP(-this.user.attributes.atk, true);
                 }
             }else{
                 this.attack = true;
@@ -233,7 +235,7 @@
                 this.socket.emit('changePlayerHP', {id: this.user.id, value: value});
             }
 
-            if(this.enemy.attr.attributes.hp <= 0){
+            if(this.user.attributes.hp <= 0){
                 this.death(true);
                 this.enemy.enemy.animations.stop();
             }

@@ -10,7 +10,7 @@
 
         this.ataque = true;
 
-        this.enemy = [];
+        this.enemies = [];
 
         this.itens = [];
 
@@ -146,11 +146,51 @@
             // Inicia o sistema de Fisica do Jogo;
             this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-            // Instancia a classe Cliente;
-//            this.socket = new Cliente(this);
             this.socket = new Connect(this);
             // Connecta no servidor de socket.
             this.socket.connect();
+        },
+
+        _create: function(){
+            //Cria o Mapa
+            this.mapa = new Mapa(this.game);
+            this.mapa.create();
+
+            // Cria o Player Local
+            var createPlayer = this.socket.getSocket('Player');
+                createPlayer.createPlayer();
+        },
+
+        _createEnemy: function(enemy){
+            var tmpEnemy = new Enemy(this.game, enemy, this.socket);
+                tmpEnemy.create();
+
+            this.enemies.push(tmpEnemy);
+        },
+
+        _changeEnemyHP: function(data){
+
+            var tmpEnemy = this.playerById(data.id, this.enemies);
+
+            if(!tmpEnemy){
+                util.log('Move Player not found: ' + data.id);
+                return;
+            };
+
+            tmpEnemy.changeHP(data.value, false);
+        },
+
+        _deathEnemy: function(id){
+            var tmpEnemy = this.playerById(id, this.enemies);
+
+            if(!tmpEnemy){
+                util.log('Move Player not found: ' + id);
+                return;
+            };
+
+            this.enemies.splice(this.enemies.indexOf(tmpEnemy), 1);
+
+            tmpEnemy.death(false);
         },
 
         _createPlayer: function(user){
@@ -172,7 +212,7 @@
         },
 
         _onMovePlayer: function( data ){
-            var newRemotePlayer = this.playerById(data.id);
+            var newRemotePlayer = this.playerById(data.id, this.remotePlayer);
 
             if(!newRemotePlayer){
                 util.log('Move Player not found: ' + data.id);
@@ -184,8 +224,19 @@
             newRemotePlayer.movePlayer();
         },
 
+        _battleAnimationsEnemy: function(data){
+            var tmpEnemy = this.playerById(data.id, this.enemies);
+
+            if(!tmpEnemy){
+                util.log('Move Player not found: ' + data.id);
+                return;
+            };
+
+            tmpEnemy._batleAnimations(data.direction);
+        },
+
         _battleAnimationsPlayer: function(data){
-            var newRemotePlayer = this.playerById(data.id);
+            var newRemotePlayer = this.playerById(data.id, this.remotePlayer);
 
             if(!newRemotePlayer){
                 util.log('Move Player not found: ' + data.id);
@@ -197,7 +248,7 @@
 
         _stopPlayer: function( data ){
 
-            var newRemotePlayer = this.playerById(data.id);
+            var newRemotePlayer = this.playerById(data.id, this.remotePlayer);
 
             if(!newRemotePlayer){
                 util.log('Move Player not found: ' + data.id);
@@ -208,7 +259,7 @@
         },
 
         _deathPlayer: function( data ){
-            var newRemotePlayer = this.playerById(data.id);
+            var newRemotePlayer = this.playerById(data.id, this.remotePlayer);
 
             if(!newRemotePlayer){
                 util.log('Move Player not found: ' + data.id);
@@ -220,7 +271,7 @@
 
         _changePlayerHP: function(data){
 
-            var newRemotePlayer = this.playerById(data.id);
+            var newRemotePlayer = this.playerById(data.id, this.remotePlayer);
 
             if(!newRemotePlayer){
                 util.log('Move Player not found: ' + data.id);
@@ -230,50 +281,56 @@
             newRemotePlayer.changeHP(data.value, false);
         },
 
-        _create: function(){
-            //Cria o Mapa
-            this.mapa = new Mapa(this.game);
-            this.mapa.create();
-
-            // Cria o Player Local
-            var createPlayer = this.socket.getSocket('Player');
-                createPlayer.createPlayer();
-//            this.socket.createPlayer();
-
-            // Cria os Inimigos
-            var createEnemy = this.socket.getSocket('Enemy');
-                createEnemy.create();
-//            this.enemy = new Enemy(this.game, this.enemyAvatar);
-//            this.enemy.create();
-
-            // Inicializa Update e o render
-//            this.init = true;
-        },
 
         update: function(){
             if(this.init){
+
                 this.localPlayer.update();
-                this.enemy.update();
+//                this.enemy.update();
                 this.camera.update();
 
                 // Adiciona Colisão.
                 this.game.physics.arcade.collide(this.localPlayer.player, this.mapa.layer[0]);
+
+                if(this.enemies.length > 0){
+                    // Loop no array de Inimigos
+                    for(var i = 0; i < this.enemies.length; i++){
+                        this.game.physics.arcade.collide(this.localPlayer.player, this.enemies[i].enemy, this.AtackAnima, null, this);
+
+                        for(var j = 0; j < this.remotePlayer.length; j++){
+                            this.game.physics.arcade.collide(this.remotePlayer[j].player, this.enemies[i].enemy);
+                        }
+                    }
+                }
+
+                // Adiciona Colisão entre os players remotos e o Mapa;
+//                for(var i = 0; i < this.remotePlayer.length; i++){
+//                    this.game.physics.arcade.collide(this.remotePlayer[i].player, this.mapa.layer[0]);
+//
+//                    for(var j = 0; j < this.enemies.length; j++){
+//                        // Local Player
+//                        this.game.physics.arcade.collide(this.localPlayer.player, this.enemies[j].enemy, this.AtackAnima, null, this);
+//                        // Remote Player
+//                        this.game.physics.arcade.collide(this.remotePlayer[i].player, this.enemies[j].enemy, this.AtackAnima, null, this);
+//
+//                        // Verifica se a arma sobrepoe o inimigo se sim causa danso se nao para o combate.
+//                        if(!this.game.physics.arcade.overlap(this.localPlayer.over, this.enemies[j].enemy)){
+//                            this.enemy.enemy.animations.stop();
+//                        }
+//                    }
+//                }
+
+                /*
                 this.game.physics.arcade.collide(this.localPlayer.player, this.enemy.enemy, this.AtackAnima, null, this);
 
                 // Adiciona Colisão com os Itens
                 this.game.physics.arcade.collide(this.localPlayer.player, this.itens.itens, this.getItens, null, this);
 
-                // Adiciona Colisão entre os players remotos e o Mapa;
-                for(var i = 0; i < this.remotePlayer.length; i++){
-                    this.game.physics.arcade.collide(this.remotePlayer[i].player, this.mapa.layer[0]);
-                    this.game.physics.arcade.collide(this.remotePlayer[i].player, this.enemy.enemy, this.AtackAnima, null, this);
-                }
-
-
                 // Verifica se a arma sobrepoe o inimigo se sim causa danso se nao para o combate.
                 if(!this.game.physics.arcade.overlap(this.localPlayer.over, this.enemy.enemy)){
                     this.enemy.enemy.animations.stop();
                 }
+                */
             }
         },
 
@@ -284,9 +341,12 @@
             }
         },
 
-        AtackAnima: function(){
-            this.localPlayer.battleAnimations(this.enemy);
-            this.enemy.battleAnimations(this.localPlayer);
+        AtackAnima: function(obj1, obj2){
+            tmpEnemy = this.playerById(obj2.id, this.enemies);
+
+            this.localPlayer.battleAnimations(tmpEnemy);
+            tmpEnemy.battleAnimations(this.localPlayer);
+
         },
 
         getItens: function(obj1, obj2){
@@ -294,11 +354,11 @@
         },
 
         // Find player by ID
-        playerById: function( id ) {
+        playerById: function( id, data ) {
 
-            for (var i = 0; i < this.remotePlayer.length; i++) {
-                if (this.remotePlayer[i].getId() == id)
-                    return this.remotePlayer[i];
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].getId() == id)
+                    return data[i];
             }
 
             return false;

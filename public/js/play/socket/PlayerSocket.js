@@ -12,6 +12,7 @@
         },
 
         setEventHandlers: function(){
+
             var _this = this;
 
             //noinspection BadExpressionStatementJS

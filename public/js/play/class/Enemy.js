@@ -1,7 +1,9 @@
 (function(){
-    Enemy = function(game, attr){
+    Enemy = function(game, attr, socket){
         this.game = game;
         this.enemy = false;
+        this.socket = socket.socket;
+        this.id = attr.id;
 
         // Calcula os attrs
         var cAttr = new CalcAttr(attr);
@@ -30,7 +32,8 @@
 
             // Inimigo
             this.enemy = this.game.add.sprite(this.attr.position.x, this.attr.position.y, 'skeleton', 13);
-
+            this.enemy.id = this.id;
+            this.enemy.name = this.attr.name;
             // Fisica
             this.game.physics.enable(this.enemy, Phaser.Physics.ARCADE);
 
@@ -65,6 +68,24 @@
         render: function(){
         },
 
+        _batleAnimations: function(direction){
+
+            switch (direction){
+                case '_left':
+                    this.enemy.animations.play('aleft', this.attr.attributes.aspd, true);
+                    break;
+                case '_right':
+                    this.enemy.animations.play('aright', this.attr.attributes.aspd, true);
+                    break;
+                case '_up':
+                    this.enemy.animations.play('aup', this.attr.attributes.aspd, true);
+                    break;
+                case '_down':
+                    this.enemy.animations.play('adown', this.attr.attributes.aspd, true);
+                    break;
+            }
+        },
+
         addText: function(){
             this.name = this.game.add.text(0, -15, this.attr.name, this.style);
             this.hp   = this.game.add.text(0, -30, 'HP: ' + this.attr.attributes.hp, this.style);
@@ -78,15 +99,23 @@
 
             this.hero = hero;
 
+            var direction = 'false';
+
             if(this.enemy.body.touching.left){
                 this.enemy.animations.play('aleft', this.attr.attributes.aspd, true);
+                direction = '_left';
             }else if(this.enemy.body.touching.right){
                 this.enemy.animations.play('aright', this.attr.attributes.aspd, true);
+                direction = '_right';
             }else if(this.enemy.body.touching.up){
                 this.enemy.animations.play('aup',this.attr.attributes.aspd,true);
+                direction = '_up';
             }else if(this.enemy.body.touching.down){
                 this.enemy.animations.play('adown', this.attr.attributes.aspd, true);
+                direction = '_down';
             }
+
+            this.socket.emit('battleAnimationsEnemy', { id: this.id, direction: direction });
         },
 
         battle: function(){
@@ -100,19 +129,31 @@
             }
         },
 
-        changeHP: function(value){
+        changeHP: function(value, remote){
             this.attr.attributes.hp = this.attr.attributes.hp + (value);
             this.hp.setText(this.attr.attributes.hp);
 
+            if(remote){
+                this.socket.emit('changeEnemyHP', {id: this.id, value: value});
+            }
+
             if(this.attr.attributes.hp <= 0){
-                this.death();
+                this.death(true);
                 this.hero.stop(true);
             }
         },
 
-        death: function(){
+        death: function(remote){
             this.enemy.animations.play('death', 10, false, true);
             this.item.create(Math.floor(Math.random() * 419)+1);
+
+            if(remote){
+               this.socket.emit('deathEnemy', {id: this.id});
+            }
+        },
+
+        getId: function(){
+            return this.id;
         }
     };
 })();
