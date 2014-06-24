@@ -11,17 +11,28 @@ var MapSchema  = new Schema({
     tileHeight: {type: Number, require: true},
     file: {type: String, require: true},
     tilesheet: {},
-    layers: {}
+    layers: {},
+    enemies: {}
 });
 
 var Map        = mongoose.model("Map", MapSchema);
 
-exports.getMap = function(){
-    return Map;
+exports.getMaps = function(Maps){
+    var tmpMaps = Maps;
+    var callback = function(){
+        return function(err, data){
+            if(err){
+                console.log(err);
+            }else{
+                tmpMaps.setMaps(data);
+            }
+        }
+    };
+    Map.find({}, callback());
 };
 
 exports.list = function(req, res){
-    Map.find().exec(function(err, maps){
+    Map.find({}).exec(function(err, maps){
         if(err){
             console.log("Error: ", err);
         }else{

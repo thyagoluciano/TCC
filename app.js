@@ -57,7 +57,8 @@ load('models')
     .then('controllers', { verbose: true})
     .then('routes')
     .into(app);
-load('sockets')
+load('models')
+    .then('sockets', { verbose: true})
     .into(io);
 
 // development only

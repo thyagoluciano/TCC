@@ -1,60 +1,73 @@
-var Player = function( obj ){
-    var user = obj;
+function Player(io, name){
+    this.playerModel = io.models.avatar;
+    this.id;
+    this.name = name;
+    this.player;
 
-    var setSocketId = function(id){
-        user.socketId = id;
-    };
+    this.Calc = require('./Calc');
+};
 
-    var getId = function(){
-        return user.socketId;
-    };
+Player.prototype = {
+    create: function(id){
+        this.id = id;
+        this.playerModel.getAvatar(this);
+    },
 
-    var getDirection = function(){
-        return user.direction;
-    };
+    savePlayer: function(){
+        this.playerModel.saveAvatar(this.player);
+    },
 
-    var getAnimationsDirection = function(){
-        return user.animationDirection;
-    };
+    setPlayer: function(avatar){
+        this.calcAttr(avatar);
+    },
 
-    var getRoom = function(){
-        return user.room;
-    };
+    setDirection: function(direction){
+        this.player.direction = direction;
+    },
 
-    var getUser = function(){
-        return user;
-    };
+    setPosition: function(position){
+        this.player.position.x = position.x;
+        this.player.position.y = position.y;
+    },
 
-    var setDirection = function(direction){
-        user.direction = direction;
-    };
+    setFrame: function(frame){
+        this.player.frame = frame;
+    },
 
-    var setAnimationsDirection = function(direction){
-        user.animationDirection = direction;
-    }
+    setHp: function(value){
+        this.player.attributes.hp = value;
+    },
 
-    var setPosition = function(position){
-        user.position.x = position.x;
-        user.position.y = position.y;
-    }
+    calcAttr: function(avatar){
+        var calc = new this.Calc(avatar);
+        this.player = calc.getAttr();
+        this.player = this.player.toObject();
+        this.player.id = this.id;
+    },
 
-    var setFrame = function(frame){
-        user.frame = frame;
-    }
+    getId: function(){
+        return this.id;
+    },
 
-    return {
-        setSocketId: setSocketId,
-        getId: getId,
-        getRoom: getRoom,
-        getUser: getUser,
-        getDirection: getDirection,
-        setDirection: setDirection,
-        setPosition: setPosition,
-        setFrame: setFrame,
-        setAnimationsDirection: setAnimationsDirection,
-        getAnimationsDirection: getAnimationsDirection
+    getName: function(){
+        return this.name;
+    },
+
+    getPlayer: function(){
+        return this.player;
+    },
+
+    getDirection: function(){
+        return this.player.direction;
+    },
+
+    getRoom: function(){
+        return this.player.room;
+    },
+
+    getHp: function(){
+        return this.player.attributes.hp;
     }
 };
 
-exports.Player = Player;
-
+module.exports = Player;

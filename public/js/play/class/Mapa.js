@@ -6,35 +6,34 @@
     };
 
     Mapa.prototype = {
-        create: function(){
+        create: function(data){
+
+            var map = data.maps;
+
             // Adiciona o Tilemap e o tileset do mapa
-            this.map = this.game.add.tilemap('praia');
-            this.map.addTilesetImage('Praia', 'tiles', 32, 32, 0, 0, 1);
+            this.map = this.game.add.tilemap(map.name);
+            this.map.addTilesetImage(map.name, 'tiles', map.tileWidth, map.tileHeight, 0, 0, 1);
 
+            for(var i = 0; i < map.layers.length; i++){
+                // Cria os Layers do mapa
+                this.layer[i] = this.map.createLayer(map.layers[i].name);
 
-            // Seta a Layer que tera colisão
-            this.map.setCollision(24, true, 'Colisao');
-            this.map.layers[3].visibility = false;
+                if(map.layers[i].tiles){
+                    for(var j = 0; j < map.layers[i].tiles.length; j++){
+                        // Seta a Layer que tera colisão
+                        this.map.setCollision(map.layers[i].tiles[j], true, map.layers[i].name);
+                        // Adiciona a Fisica na layer que possuira colisão
+                        this.game.physics.enable(this.layer[i], Phaser.Physics.ARCADE);
+                    }
 
-            // Cria os Layers do mapa
-            this.layer[0] = this.map.createLayer('Colisao');
-            this.layer[1] = this.map.createLayer('Praia');
-            this.layer[2] = this.map.createLayer('Enfeites');
-            this.layer[3] = this.map.createLayer('Montanhas');
-
-
-            // Adiciona a Fisica na layer que possuira colisão
-            this.game.physics.enable(this.layer[0], Phaser.Physics.ARCADE);
-
-            // Chama o metodo de redimensionamento das layers
-            this.layer[0].resizeWorld();
-            this.layer[1].resizeWorld();
-            this.layer[2].resizeWorld();
-            this.layer[3].resizeWorld();
+//                    this.map.layers[i].visibility = false;
+                }
+                // Chama o metodo de redimensionamento das layers
+                this.layer[i].resizeWorld();
+            }
 
             // Liga ou Desliga o Debug;
             this.layer[0].debug = true;
-
         },
 
         update: function(){

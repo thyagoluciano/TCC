@@ -1,18 +1,17 @@
 (function(){
     Connect = function(game){
-        this.socket = GameCtrl.socket;
+        this.socket;
         this.game = game;
         this.listSockets = [];
     };
 
     Connect.prototype = {
         connect: function(){
-            this.socket.emit('game:init');
+            this.socket = io.connect('http://localhost:3000');
 
             this.listSockets['Player']  = new PlayerSocket(this);
             this.listSockets['Enemy']   = new EnemySocket(this);
 
-            // Inicializa os Eventos
             this.setEventHandlers();
         },
 
@@ -20,12 +19,14 @@
             var _this = this;
 
             //noinspection BadExpressionStatementJS
-            this.socket.on('game:createGame', function(data){
-                _this.game._create(data);
+            this.socket.on('conn', function(data){
+                console.log('ClienteID: '+ data.id);
+                _this.game._create();
             })[_this];
 
             this.listSockets['Player'].setEventHandlers();
             this.listSockets['Enemy'].setEventHandlers();
+
         },
 
         getSocket: function(key){

@@ -10,14 +10,16 @@ var AvatarSchema  = new Schema({
     gender: {type: String, default: 'M'},
     sprite: {type: Number},
     attributes: {
-        for: {type: Number, min: 0,     max: 99,    require: true},
+        str: {type: Number, min: 0,     max: 99,    require: true},
         agi: {type: Number, min: 0,     max: 99,    require: true},
         vit: {type: Number, min: 0,     max: 99,    require: true},
         int: {type: Number, min: 0,     max: 99,    require: true},
-        des: {type: Number, min: 0,     max: 99,    require: true},
-        sor: {type: Number, min: 0,     max: 99,    require: true},
-        hp: {type: Number,  min: 100,   max: 9999,  require: true},
-        level: {type: Number,  min: 100,   max: 9999,  require: true}
+        dex: {type: Number, min: 0,     max: 99,    require: true},
+        luk: {type: Number, min: 0,     max: 99,    require: true},
+        atk: {type: Number, min: 0,     max: 99,    require: true},
+        def: {type: Number, min: 0,     max: 99,    require: true},
+        hp: {type: Number,  min: 0,     max: 9999,  require: true},
+        level: {type: Number,  min: 0,   max: 99,  require: true}
     },
     equipment: {
         weapon: {},
@@ -29,8 +31,8 @@ var AvatarSchema  = new Schema({
         belt: {}
     },
     position: {
-        px: 0,
-        py: 0
+        x: {type: Number, require: true},
+        y: {type: Number, require: true}
     },
     storage:{},
     user: {
@@ -41,8 +43,34 @@ var AvatarSchema  = new Schema({
 
 var Avatar          = mongoose.model("Avatar", AvatarSchema);
 
-exports.getAvatar = function(){
-    return Avatar;
+exports.saveAvatar = function(dados){
+
+    delete dados._id;
+    delete dados.id;
+
+    dados.position.x = Math.round(dados.position.x);
+    dados.position.y = Math.round(dados.position.y)
+
+
+    Avatar.update({name: dados.name}, dados, function(err, data){
+        console.log(data);
+    });
+};
+
+exports.getAvatar = function(Player){
+    var tmpPlayer = Player;
+
+    var callback = function(){
+        return function(err, data){
+            if(err){
+                console.log(err);
+            }else{
+                tmpPlayer.setPlayer(data);
+            }
+        }
+    };
+
+    Avatar.findOne({name: tmpPlayer.getName()}, callback());
 };
 
 exports.setAvatar = function(req, res){
@@ -118,6 +146,10 @@ exports.create = function(req, res){
         gender:     data.gender,
         attributes: data.attributes,
         sprite: 1,
+        position: {
+            px: 250,
+            py: 80
+        },
         user:       data.user
     };
 

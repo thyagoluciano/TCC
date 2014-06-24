@@ -1,147 +1,18 @@
 (function(){
-
     GameCtrl.Game = function(){
-        this.socket;
+        this.socket; // Socket
         this.init = false;
-        this.mapa;
+        this.camera; // Camera
+
+        this.map;
         this.localPlayer;
         this.remotePlayer = [];
-        this.camera;
-
-        this.ataque = true;
-
         this.enemies = [];
-
         this.itens = [];
 
-        // Variaveis temporarias ( Dados do Banco de Dados);
-        this.avatar = {
-            name: 'thyago.luciano',
-            gender: 'M',
-            sprite: {
-                atlas: '',
-                imagem: ''
-            },
-            attributes: {
-                str: 10,
-                agi: 5,
-                vit: 99,
-                int: 10,
-                dex: 23,
-                luk: 90,
-                level: 99
-            },
-            position: {
-                x: 450,
-                y: 80
-            },
-            storage: {
-                items: [
-                    {
-                        id: 1,
-                        type: 'equip',
-                        name: 'uva',
-                        hp: 100
-                    },
-                    {
-                        id: 1,
-                        type: 'restauraçao',
-                        name: 'uva',
-                        hp: 100
-                    }
-                ]
-            },
-            equipment: {
-                weapon: {
-                    type: 'dagger',
-                    atk: 5,
-                    hp: 1
-                },
-                torso: {
-                    atk: 0,
-                    hp: 1
-                },
-                legs: {
-                    atk: 0,
-                    hp: 1
-                },
-                head: {
-                    atk: 0,
-                    hp: 1
-                },
-                hands: {
-                    atk: 0,
-                    hp: 1
-                },
-                feet: {
-                    atk: 0,
-                    hp: 1
-                },
-                belt: {
-                    atk: 0,
-                    hp: 1
-                }
-            }
-        };
-
-        this.enemyAvatar = {
-            name: 'Skelleton',
-            gender: 'M',
-            sprite: {
-                atlas: '',
-                imagem: ''
-            },
-            attributes: {
-                str: 12,
-                agi: 2,
-                vit: 6,
-                int: 10,
-                dex: 40,
-                luk: 90,
-                level: 20
-            },
-            position: {
-                x: 300,
-                y: 200
-            },
-            storage: {
-
-            },
-            equipment: {
-                weapon: {
-                    atk: 0,
-                    hp: 1
-                },
-                torso: {
-                    atk: 0,
-                    hp: 1
-                },
-                legs: {
-                    atk: 0,
-                    hp: 1
-                },
-                head: {
-                    atk: 0,
-                    hp: 1
-                },
-                hands: {
-                    atk: 0,
-                    hp: 1
-                },
-                feet: {
-                    atk: 0,
-                    hp: 1
-                },
-                belt: {
-                    atk: 0,
-                    hp: 1
-                }
-            }
-        };
-};
+    };
 
     GameCtrl.Game.prototype = {
-
         create: function(){
             // Inicia o sistema de Fisica do Jogo;
             this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -151,21 +22,286 @@
             this.socket.connect();
         },
 
-        _create: function(){
-            //Cria o Mapa
-            this.mapa = new Mapa(this.game);
-            this.mapa.create();
+        update: function(){
+            if(this.init){
+                this.localPlayer.update();
+                this.camera.update();
 
-            // Cria o Player Local
-            var createPlayer = this.socket.getSocket('Player');
-                createPlayer.createPlayer();
+                // Adiciona Colisão Player Local.
+                this.game.physics.arcade.collide(this.localPlayer.player, this.map.layer[0]);
+
+                if(this.remotePlayer.length > 0){
+                    this.colisaoRemotePlayer();
+                }
+
+                if(this.enemies.length > 0){
+                    this.colisaoEnemy();
+                }
+
+                if(this.itens.length > 0){
+                    this.colisaoItens();
+                }
+            }
         },
 
-        _createEnemy: function(enemy){
-            var tmpEnemy = new Enemy(this.game, enemy, this.socket);
-                tmpEnemy.create();
+        render: function(){
+            if(this.init){
+                this.localPlayer.render();
+/*
+                if(this.enemies.length > 0){
+                    for(var i = 0; i < this.enemies.length; i++){
+                        this.enemies[i].render();
+                    }
+                }
+*/
+            }
+        },
 
-            this.enemies.push(tmpEnemy);
+        // VERIFICA A COLISÃO DOS ITENS COM O JOGADOR LOCAL E COM OS JOGADORES REMOTOS
+        colisaoItens: function(){
+            for(var i = 0; i < this.itens.length; i++){
+                // Adiciona Colisão.
+                this.game.physics.arcade.collide(this.localPlayer.player, this.itens[i].item, this.coletaItem, null, this);
+
+//                if(this.remotePlayer.length > 0){
+//                    for(var j = 0; j < this.remotePlayer.length; j++){
+//                        this.game.physics.arcade.collide(this.remotePlayer[j].player, this.itens[i].item, function(obj1, obj2){
+//                            obj2.kill();
+//                        }, null, this);
+//                    }
+//                }
+            }
+        },
+
+        coletaItem: function(obj1, obj2){
+            var tmpItem  = this.playerById(obj2.id, this.itens);
+
+            switch (obj2.properties.type){
+                case 'item':
+                    console.log('item');
+//                    this.localPlayer.addStorage(tmpItem);
+                    break;
+                case 'hp':
+                    var restauraHP = ((this.localPlayer.getHp() * obj2.properties.value) / 100);
+                        restauraHP = Math.floor(restauraHP);
+
+                    var total = this.localPlayer.user.hpTotal - this.localPlayer.getHp() ;
+
+                    console.log(total, restauraHP);
+                    if(total > restauraHP){
+                        this.localPlayer.changeHP(restauraHP);
+                    }else{
+                        this.localPlayer.changeHP(total);
+                    }
+
+                    break;
+                case 'weapon':
+//                    this.localPlayer.addStorage(tmpItem);
+                    console.log('weapon');
+                    break;
+            }
+
+            this.socket.socket.emit('item:remove', {itemId: tmpItem.getId(), room: this.localPlayer.getRoom()});
+
+            obj2.kill();
+
+        },
+
+        // VERIFICA A COLISÃO DOS JOGADORES REMOTOS COM O MAPA
+        colisaoRemotePlayer: function(){
+            for(var j = 0; j < this.remotePlayer.length; j++){
+                // Adiciona Colisão.
+                this.game.physics.arcade.collide(this.remotePlayer[j].player, this.map.layer[0]);
+            }
+        },
+
+        // VERIFICA A COLISÃO DOS INIMIGOS COM O JOGADOR LOCAL E COM OS JOGADORES REMOTOS
+        colisaoEnemy: function(){
+            for(var i = 0; i < this.enemies.length; i++){
+                this.enemies[i].update();
+
+                this.game.physics.arcade.collide(this.localPlayer.player, this.enemies[i].enemy, this.AtackAnima, null, this);
+                // Verifica se a arma sobrepoe o inimigo se sim causa danos se nao para o combate.
+                if(this.game.physics.arcade.overlap(this.localPlayer.over, this.enemies[i].enemy)){
+                        this.enemies[i].battle = true;
+                }else{
+                        if(this.enemies[i].battle){
+                            this.enemies[i].battle = false;
+                            this.enemies[i].stop(true);
+                        }
+                }
+
+                if(this.remotePlayer.length > 0){
+                    for(var j = 0; j < this.remotePlayer.length; j++){
+//                        this.game.physics.arcade.collide(this.remotePlayer[j].player, this.enemies[i].enemy, this.remoteAtackAnima, null, this);
+//                        // Adiciona Colisão.
+                        this.game.physics.arcade.collide(this.remotePlayer[j].player, this.enemies[i].enemy);
+                    }
+                }
+            }
+        },
+
+        // ANIMAÇÃO DA BATALHA
+        AtackAnima: function(obj1, obj2){
+            var tmpEnemy = this.playerById(obj2.id, this.enemies);
+
+            this.localPlayer.battleAnimations(tmpEnemy, true);
+            tmpEnemy.battleAnimations(this.localPlayer, true);
+        },
+
+//        remoteAtackAnima: function(obj1, obj2){
+//            tmpPlayer = this.playerById(obj1.id, this.remotePlayer);
+//            tmpEnemy  = this.playerById(obj2.id, this.enemies);
+//
+//            tmpPlayer.battleAnimations(tmpEnemy, false);
+//            tmpEnemy.battleAnimations(tmpPlayer, false);
+//        },
+
+        _create: function(data){
+            // Renderiza o MAPA
+            this.map = new Mapa(this.game);
+            this.map.create(data);
+
+            // Create Player
+            this.localPlayer = new Player(this.game, data.user, this.socket);
+            this.localPlayer.create();
+
+            // Cria a Camera
+            this.camera = new Camera(this.game, this.localPlayer.player);
+            this.camera.create();
+
+            // Inicializa o Update do Jogador
+            this.init = true;
+        },
+
+        /**
+         * SOCKETS PARA O JOGADOR
+         */
+        // Aciona a animaçao de batalha
+        _battleAnimationsPlayer: function(data){
+            var tmpPlayer = this.playerById(data.id, this.remotePlayer);
+
+            if(!tmpPlayer){
+                console.log('Game:_battleAnimationsPlayer: not found: ' + data.id);
+                return;
+            };
+
+            tmpPlayer._batleAnimations(data.direction);
+        },
+
+        // Adiciona o jogador no game, e tambem no array de jogadores remotos
+        _onRemotePlayer: function( data ){
+            var remotePlayer = new Player(this.game, data.user, this.socket);
+                remotePlayer.create();
+
+            this.remotePlayer.push(remotePlayer);
+        },
+
+        // Movimenta o jogador remoto
+        _onMovePlayer: function(data){
+            var remotePlayer = this.playerById(data.id, this.remotePlayer);
+
+            if(!remotePlayer){
+                console.log('Move Player not found: ' + data.id);
+                return;
+            };
+
+            remotePlayer.setDirection(data.direction);
+
+            remotePlayer.movePlayer();
+        },
+
+        // Disconecta o jogador, e retira o mesmo do array.
+        _onDisconnect: function(data){
+            var tmpPlayer = this.playerById(data.id, this.remotePlayer);
+
+            this.remotePlayer.splice(this.remotePlayer.indexOf(tmpPlayer), 1);
+
+            tmpPlayer.player.kill();
+            tmpPlayer.over.kill();
+        },
+
+        // Altera o HP do Usuario
+        _changePlayerHP: function(data){
+
+            var remotePlayer = this.playerById(data.id, this.remotePlayer);
+
+            if(!remotePlayer){
+                console.log('Game:_changePlayerHP: Player not found ' + data.id);
+                return;
+            };
+
+            remotePlayer.setHP(data.hp);
+        },
+
+        _stopPlayer: function( data ){
+
+            var remotePlayer = this.playerById(data.id, this.remotePlayer);
+
+            if(!remotePlayer){
+                console.log('Game: _stopPlayer: Player not found ' + data.id);
+                return;
+            };
+
+            remotePlayer.stop(false);
+        },
+
+        _deathPlayer: function( data ){
+            var remotePlayer = this.playerById(data.id, this.remotePlayer);
+
+            if(!remotePlayer){
+                console.log('Game:_deathPlayer : Player not found: ' + data.id);
+                return;
+            };
+
+            remotePlayer.death(false);
+        },
+
+        /**
+         * SOCKETS PARA OS INIMIGOS
+         */
+        // Enemies
+        _onCreateEnemy: function(data){
+            var enemies = data.enemies;
+
+            for(var i = 0; i < enemies.length; i++){
+                var tmpEnemy = new Enemy(this.game, enemies[i].enemy, this.socket);
+                    tmpEnemy.id = enemies[i].enemy.id;
+                    tmpEnemy.create();
+
+                this.enemies.push(tmpEnemy);
+            }
+        },
+
+        // Aciona a animaçao do inimigo
+        _battleAnimationsEnemy: function(data){
+
+            var tmpEnemy = this.playerById(data.id, this.enemies);
+            var tmpHero = this.playerById(data.heroId, this.remotePlayer);
+
+            if(!tmpEnemy){
+                util.log('Game:_battleAnimationsEnemy: Enemy not found ' + data.id);
+                return;
+            };
+
+            if(!tmpHero){
+                util.log('Game:_battleAnimationsEnemy: RemotePlayer not found ' + data.id);
+                return;
+            };
+
+            tmpEnemy._batleAnimations(data.direction, tmpHero);
+        },
+
+        _stopEnemy: function( data ){
+
+            var tmpEnemy = this.playerById(data.id, this.enemies);
+
+            if(!tmpEnemy){
+                util.log('Game:_stopEnemy -  Enemy not found: ' + data.id);
+                return;
+            };
+
+            tmpEnemy.stop(false);
         },
 
         _changeEnemyHP: function(data){
@@ -173,18 +309,18 @@
             var tmpEnemy = this.playerById(data.id, this.enemies);
 
             if(!tmpEnemy){
-                util.log('Move Player not found: ' + data.id);
+                util.log('Game:_changeEnemyHP: Enemy not found: ' + data.id);
                 return;
             };
 
-            tmpEnemy.changeHP(data.value, false);
+            tmpEnemy.setHp(data.hp)
         },
 
         _deathEnemy: function(id){
             var tmpEnemy = this.playerById(id, this.enemies);
 
             if(!tmpEnemy){
-                util.log('Move Player not found: ' + id);
+                console.log('Game:_deathEnemy: not found: ' + id);
                 return;
             };
 
@@ -193,164 +329,22 @@
             tmpEnemy.death(false);
         },
 
-        _createPlayer: function(user){
-            this.localPlayer = new Player(this.game, user, this.socket);
-            this.localPlayer.create();
+        /**
+         * SOCKETS PARA ITENS
+         */
+        // DROPA ITENS
+        _dropItem: function(data){
+            var tmpId = (this.itens.length + 1);
 
-            // Cria a Camera
-            this.camera = new Camera(this.game, this.localPlayer.player);
-            this.camera.create();
+            var tmpItem = new Itens(this.game, this.socket);
+                tmpItem.create(data, tmpId);
 
-            this.init = true;
+            this.itens.push(tmpItem);
         },
 
-        _onRemotePlayer: function( user ){
-            var remotePlayer = new Player(this.game, user, this.socket);
-                remotePlayer.create();
-
-            this.remotePlayer.push(remotePlayer);
-        },
-
-        _onMovePlayer: function( data ){
-            var newRemotePlayer = this.playerById(data.id, this.remotePlayer);
-
-            if(!newRemotePlayer){
-                util.log('Move Player not found: ' + data.id);
-                return;
-            };
-
-            newRemotePlayer.setDirection(data.direction);
-
-            newRemotePlayer.movePlayer();
-        },
-
-        _battleAnimationsEnemy: function(data){
-            var tmpEnemy = this.playerById(data.id, this.enemies);
-
-            if(!tmpEnemy){
-                util.log('Move Player not found: ' + data.id);
-                return;
-            };
-
-            tmpEnemy._batleAnimations(data.direction);
-        },
-
-        _battleAnimationsPlayer: function(data){
-            var newRemotePlayer = this.playerById(data.id, this.remotePlayer);
-
-            if(!newRemotePlayer){
-                util.log('Move Player not found: ' + data.id);
-                return;
-            };
-
-            newRemotePlayer._batleAnimations(data.direction);
-        },
-
-        _stopPlayer: function( data ){
-
-            var newRemotePlayer = this.playerById(data.id, this.remotePlayer);
-
-            if(!newRemotePlayer){
-                util.log('Move Player not found: ' + data.id);
-                return;
-            };
-
-            newRemotePlayer.stop(false);
-        },
-
-        _deathPlayer: function( data ){
-            var newRemotePlayer = this.playerById(data.id, this.remotePlayer);
-
-            if(!newRemotePlayer){
-                util.log('Move Player not found: ' + data.id);
-                return;
-            };
-
-            newRemotePlayer.death(false);
-        },
-
-        _changePlayerHP: function(data){
-
-            var newRemotePlayer = this.playerById(data.id, this.remotePlayer);
-
-            if(!newRemotePlayer){
-                util.log('Move Player not found: ' + data.id);
-                return;
-            };
-
-            newRemotePlayer.changeHP(data.value, false);
-        },
-
-
-        update: function(){
-            if(this.init){
-
-                this.localPlayer.update();
-//                this.enemy.update();
-                this.camera.update();
-
-                // Adiciona Colisão.
-                this.game.physics.arcade.collide(this.localPlayer.player, this.mapa.layer[0]);
-
-                if(this.enemies.length > 0){
-                    // Loop no array de Inimigos
-                    for(var i = 0; i < this.enemies.length; i++){
-                        this.game.physics.arcade.collide(this.localPlayer.player, this.enemies[i].enemy, this.AtackAnima, null, this);
-
-                        for(var j = 0; j < this.remotePlayer.length; j++){
-                            this.game.physics.arcade.collide(this.remotePlayer[j].player, this.enemies[i].enemy);
-                        }
-                    }
-                }
-
-                // Adiciona Colisão entre os players remotos e o Mapa;
-//                for(var i = 0; i < this.remotePlayer.length; i++){
-//                    this.game.physics.arcade.collide(this.remotePlayer[i].player, this.mapa.layer[0]);
-//
-//                    for(var j = 0; j < this.enemies.length; j++){
-//                        // Local Player
-//                        this.game.physics.arcade.collide(this.localPlayer.player, this.enemies[j].enemy, this.AtackAnima, null, this);
-//                        // Remote Player
-//                        this.game.physics.arcade.collide(this.remotePlayer[i].player, this.enemies[j].enemy, this.AtackAnima, null, this);
-//
-//                        // Verifica se a arma sobrepoe o inimigo se sim causa danso se nao para o combate.
-//                        if(!this.game.physics.arcade.overlap(this.localPlayer.over, this.enemies[j].enemy)){
-//                            this.enemy.enemy.animations.stop();
-//                        }
-//                    }
-//                }
-
-                /*
-                this.game.physics.arcade.collide(this.localPlayer.player, this.enemy.enemy, this.AtackAnima, null, this);
-
-                // Adiciona Colisão com os Itens
-                this.game.physics.arcade.collide(this.localPlayer.player, this.itens.itens, this.getItens, null, this);
-
-                // Verifica se a arma sobrepoe o inimigo se sim causa danso se nao para o combate.
-                if(!this.game.physics.arcade.overlap(this.localPlayer.over, this.enemy.enemy)){
-                    this.enemy.enemy.animations.stop();
-                }
-                */
-            }
-        },
-
-        render: function(){
-            if(this.init){
-                this.mapa.render();
-                this.localPlayer.render();
-            }
-        },
-
-        AtackAnima: function(obj1, obj2){
-            tmpEnemy = this.playerById(obj2.id, this.enemies);
-
-            this.localPlayer.battleAnimations(tmpEnemy);
-            tmpEnemy.battleAnimations(this.localPlayer);
-
-        },
-
-        getItens: function(obj1, obj2){
-            obj2.kill();
+        _removeItem: function(data){
+            var tmpItem = this.playerById(data.itemId, this.itens);
+                tmpItem.item.kill();
         },
 
         // Find player by ID

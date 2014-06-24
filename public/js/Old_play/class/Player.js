@@ -8,6 +8,10 @@
 
         this.storage = [];
 
+        // Calcula os attrs
+//        var cAttr = new CalcAttr(user);
+        // Atributos
+//        this.user = cAttr.getAttr();
         this.user = user;
 
         this.attack = true;
@@ -30,7 +34,7 @@
             this.player = this.game.add.sprite(this.user.position.x, this.user.position.y, 'char');
             this.player.id = this.user.socketId;
             this.player.name = this.user.name;
-            this.user.hpTotal = this.user.attributes.hp;
+
             // Adiciona o over, para auxiliar na batalha.
             this.over = this.game.add.sprite(0, 0, 'over');
             this.over.anchor.setTo(0.25, 0.15);
@@ -118,8 +122,7 @@
             this.user.position.y = this.player.body.y;
             this.user.frame = this.player.animations.currentFrame.index;
 
-            // Envia para o servidor as variaveis necessárias para movimento do personagem
-            this.socket.emit('player:move', { direction: direction, position: this.user.position, frame: this.user.frame });
+            this.socket.emit('movePlayer', { id: this.user.id, direction: direction, position: this.user.position, frame: this.user.frame });
         },
 
         render: function(){
@@ -215,7 +218,7 @@
             }
 
             if(remote){
-                this.socket.emit('player:battleAnimation', { direction: direction });
+                this.socket.emit('battleAnimationsPlayer', { id: this.user.id, direction: direction });
             }
         },
 
@@ -230,12 +233,14 @@
             }
         },
 
-        changeHP: function(value){
+        changeHP: function(value, remote){
 
             this.user.attributes.hp = this.user.attributes.hp + (value);
             this.hp.setText(this.user.attributes.hp);
 
-            this.socket.emit('player:changeHP', {id: this.user.id, hp: this.user.attributes.hp});
+            if(remote){
+                this.socket.emit('changePlayerHP', {id: this.user.id, value: value});
+            }
 
             if(this.user.attributes.hp <= 0){
                 this.death(true);
@@ -248,7 +253,7 @@
             this.over.kill();
 
             if(remote){
-                this.socket.emit('player:death', {id: this.user.id});
+                this.socket.emit('deathPlayer', {id: this.user.id});
             }
         },
 
@@ -257,12 +262,12 @@
             this.weapon.stop();
 
             if(remote){
-                this.socket.emit('player:stop', {id: this.user.id});
+                this.socket.emit('stopPlayer', {id: this.user.id});
             }
         },
 
         getId: function(){
-            return this.user.id;
+            return this.user.socketId;
         },
 
         setDirection: function(direction){
@@ -273,21 +278,8 @@
             this.storage.push(item);
         },
 
-        setHP: function(hp){
-            this.user.attributes.hp = hp;
-            this.hp.setText('HP: ' + this.user.attributes.hp);
-        },
-
         getStorage: function(){
             return this.storage;
-        },
-
-        getRoom: function(){
-            return this.user.room;
-        },
-
-        getHp: function(){
-            return this.user.attributes.hp;
         },
 
         msg: function(){

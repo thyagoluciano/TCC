@@ -1,6 +1,5 @@
 var GameCtrl = {
-    orientated: false,
-    socket: io.connect('http://localhost:3000')
+    orientated: false
 };
 
 (function(){

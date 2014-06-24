@@ -1,4 +1,4 @@
-(function(){
+(function (){
 
     EnemySocket = function(conn){
         this.game = conn.game;
@@ -11,39 +11,40 @@
             var _this = this;
 
             //noinspection BadExpressionStatementJS
-            this.socket.on('enemy:create', function(data){
-                _this.game._onCreateEnemy(data);
+            this.socket.on('createEnemy', function(data){
+                _this.game._createEnemy(data.enemy);
             })[_this];
 
             //noinspection BadExpressionStatementJS
-            this.socket.on('enemy:battleAnimation', function(data){
-                _this.game._battleAnimationsEnemy(data);
-            })[_this];
-
-            //noinspection BadExpressionStatementJS
-            this.socket.on('enemy:stop', function(data){
-                _this.game._stopEnemy(data);
-            })[_this];
-
-            //noinspection BadExpressionStatementJS
-            this.socket.on('enemy:changeHP', function(data){
-                _this.game._changeEnemyHP(data);
-            })[_this];
-
-            //noinspection BadExpressionStatementJS
-            this.socket.on('enemy:death', function(data){
+            this.socket.on('deathEnemy', function(data){
                 _this.game._deathEnemy(data.id);
             })[_this];
 
             //noinspection BadExpressionStatementJS
-            this.socket.on('item:drop', function(data){
+            this.socket.on('battleAnimationsEnemy', function(data){
+                _this.game._battleAnimationsEnemy(data);
+            })[_this];
+
+            //noinspection BadExpressionStatementJS
+            this.socket.on('changeEnemyHP', function(data){
+                _this.game._changeEnemyHP(data);;
+            })[_this];
+
+            //noinspection BadExpressionStatementJS
+            this.socket.on('stopEnemy', function(data){
+                _this.game._stopEnemy(data);
+            })[_this];
+
+            //noinspection BadExpressionStatementJS
+            this.socket.on('dropItem', function(data){
                 _this.game._dropItem(data);
             })[_this];
 
             //noinspection BadExpressionStatementJS
-            this.socket.on('item:remove', function(data){
-                _this.game._removeItem(data);
+            this.socket.on('deathItem', function(data){
+                _this.game._deathItem(data);
             })[_this];
+
 
         }
     }

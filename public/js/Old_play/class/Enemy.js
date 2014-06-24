@@ -6,9 +6,9 @@
         this.socket = socket.socket;
         this.id = attr.id;
 
+
         this.attr = attr;
         this.attack = true;
-        this.battle = false;
 
         // Style
         this.style = { font: "12px Arial", fill: "#000000", align: "left"};
@@ -59,12 +59,9 @@
         },
 
         render: function(){
-            this.game.debug.body(this.enemy);
         },
 
-        _batleAnimations: function(direction, hero){
-
-            this.hero = hero;
+        _batleAnimations: function(direction){
 
             switch (direction){
                 case '_left':
@@ -112,8 +109,9 @@
             }
 
             if(remote){
-                this.socket.emit('enemy:battleAnimation', { id: this.id, heroId: this.hero.getId(), direction: direction, room: this.attr.room });
+                this.socket.emit('battleAnimationsEnemy', { id: this.id, direction: direction });
             }
+
         },
 
         _battle: function(){
@@ -131,7 +129,9 @@
             this.attr.attributes.hp = this.attr.attributes.hp + (value);
             this.hp.setText(this.attr.attributes.hp);
 
-            this.socket.emit('enemy:changeHP', {id: this.id, hp: this.attr.attributes.hp, room: this.attr.room});
+            if(remote){
+                this.socket.emit('changeEnemyHP', {id: this.id, value: value});
+            }
 
             if(this.attr.attributes.hp <= 0){
                 this.death(true);
@@ -143,8 +143,8 @@
             this.enemy.animations.play('death', 10, false, true);
 
             if(remote){
-               this.socket.emit('enemy:death', {id: this.id, room: this.attr.room});
-               this.socket.emit('item:drop', { position: this.attr.position, room: this.attr.room });
+               this.socket.emit('deathEnemy', {id: this.id});
+               this.socket.emit('dropItem', {position: this.attr.position});
             }
         },
 
@@ -153,17 +153,12 @@
 //            this.weapon.stop();
 
             if(remote){
-                this.socket.emit('enemy:stop', {id: this.id, room: this.attr.room});
+                this.socket.emit('stopEnemy', {id: this.id});
             }
         },
 
         getId: function(){
             return this.id;
-        },
-
-        setHP: function(hp){
-            this.attr.attributes.hp = hp;
-            this.hp.setText('HP: ' + this.attr.attributes.hp);
         }
     };
 })();

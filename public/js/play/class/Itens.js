@@ -1,15 +1,18 @@
 (function(){
-    Itens = function(game){
+    Itens = function(game, socket){
         this.game = game;
-        this.itens;
+        this.socket = socket.socket;
+        this.item;
+        this.properties;
     };
 
     Itens.prototype = {
-        create: function(randIten){
+        create: function(data, tmpId){
             // Adiciona o over, para auxiliar na batalha.
-            this.itens = this.game.add.sprite(300, 100, 'itens', randIten);
-
-            this.game.physics.enable(this.itens, Phaser.Physics.ARCADE);
+            this.item = this.game.add.sprite(data.position.x, data.position.y, 'itens', data.item.position);
+            this.item.id = tmpId;
+            this.item.properties = data.item;
+            this.game.physics.enable(this.item, Phaser.Physics.ARCADE);
         },
 
         update: function(){
@@ -18,6 +21,19 @@
 
         render: function(){
 
+        },
+
+        getId: function(){
+            return this.item.id;
+        },
+
+        death: function(remote){
+            this.item.kill();
+
+            if(remote){
+                this.socket.emit('deathItem', {id: this.item.id});
+            }
         }
+
     };
 })();
