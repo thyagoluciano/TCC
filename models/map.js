@@ -9,8 +9,8 @@ var MapSchema  = new Schema({
     name: {type: String, require: true, unique: true},
     tileWidth: {type: Number, require: true},
     tileHeight: {type: Number, require: true},
-    file: {type: String, require: true},
     tilesheet: {},
+    atlas: {},
     layers: {},
     enemies: {}
 });
@@ -76,9 +76,10 @@ exports.create = function(req, res){
         name:       data.name,
         tileWidth:  data.tileWidth,
         tileHeight: data.tileHeight,
-        file:       data.file,
-        tilesheet: data.tilesheet,
-        layers:     data.layers
+        tilesheet:  data.tilesheet,
+        atlas:      data.atlas,
+        layers:     data.layers,
+        enemies:    data.enemies
     };
 
     var map = new Map(dados);

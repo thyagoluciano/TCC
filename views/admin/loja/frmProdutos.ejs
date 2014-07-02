@@ -1,0 +1,147 @@
+
+<div class="contentwrapper"><!--Content wrapper-->
+    <div class="heading">
+        <h3>Produtos</h3>
+        <ul class="breadcrumb">
+            <li>
+                <a href="#" class="tip" title="back to dashboard">
+                    <span class="icon16 icomoon-icon-screen-2"></span>
+                </a>
+                <span class="divider">
+                    <span class="icon16 icomoon-icon-arrow-right-2"></span>
+                </span>
+            </li>
+            <li class="active">Cadastrar Produtos</li>
+        </ul>
+    </div><!-- End .heading-->
+
+    <!-- Build page from here: Usual with <div class="row-fluid"></div> -->
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="box">
+                <div class="title">
+                    <h4>
+                        <span>Cadastar Produtos</span>
+                    </h4>
+                </div>
+                <div class="content">
+                    <form class="form-horizontal seperator" id="produtoForm" name="produtoForm" novalidate data-ng-init="get()">
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <!-- NOME -->
+                                <div class="row-fluid">
+                                    <label class="form-label span3" for="name">Nome Produto:</label>
+                                    <input class="span9" id="name" name="name" type="text" placeholder="Digite o nome do Produto" data-ng-model="produto.name" data-ng-minlength="4" required/>
+
+                                    <div ng-show="produtoForm.name.$dirty && produtoForm.name.$invalid" class="formValidacao">
+                                        <span class="erro" ng-show="produtoForm.name.$error.required">Digite o nome do Produto.</span>
+                                        <span class="erro" ng-show="produtoForm.name.$error.minlength">Nome de 4 digitos ou mais!</span>
+                                    </div>
+                                </div>
+                                <!-- CATEGORIA -->
+                                <div class="row-fluid">
+                                    <label class="form-label span3" for="categoria">Categoria:</label>
+                                    <div class="span9 controls">
+                                        <select name="categoria" data-ng-model="produto.categoria" data-ng-options="categoria.name for categoria in categorias" required>
+                                            <option value="" selected>Selecione uma categoria</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- TILED -->
+                                <div class="row-fluid">
+                                    <label class="form-label span3" for="categoria">Tiled:</label>
+                                    <div class="span9 controls">
+                                        <select name="categoria" data-ng-model="produto.tiled" data-ng-options="tiled.name for tiled in tileds" required>
+                                            <option value="" selected>Selecione um Tiled</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row-fluid" data-ng-show="imgTile">
+                                    <label class="form-label span3" for="categoria">Imagem Tiled:</label>
+                                    <div class="span9 controls">
+                                        <img src="{{produto.tiled.file}}">
+                                    </div>
+                                </div>
+                                <!-- TILED POSITION -->
+                                <div class="row-fluid">
+                                    <label class="form-label span3" for="real">Posição do Tiled</label>
+                                    <input data-ng-model="produto.tiledPosition" placeholder="Digite o numero da Imagem" class="span9" type="text" name="tiledPosition" required/>
+                                </div>
+                                <!-- PREÇO -->
+                                <div class="row-fluid">
+                                    <label class="form-label span3" for="real">Preço Real:</label>
+                                    <input data-ng-model="produto.price.real" placeholder="0,99" class="span9" type="text" name="real" required/>
+                                </div>
+                                <div class="row-fluid">
+                                    <label class="form-label span3" for="virtual">Preço Virtual:</label>
+                                    <input data-ng-model="produto.price.virtual"placeholder="0,99" class="span9" id="mask-virtual" type="text" name="virtual" required/>
+                                </div>
+                                <!-- ATRIBUTOS -->
+                                <div>
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="atk">Ataque:</label>
+                                        <input id="atk" max="99" min="0" data-ng-model="produto.equipAttr.atk" name="atk" step="1" type="range" class="span8" required>
+                                        <output>{{produto.equipAttr.atk}}</output>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="def">Defesa:</label>
+                                        <input id="def" max="99" min="0" data-ng-model="produto.equipAttr.def" name="def" step="1" type="range" class="span8" required>
+                                        <output>{{produto.equipAttr.def}}</output>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="hp">HP:</label>
+                                        <input id="hp" max="99" min="0" data-ng-model="produto.equipAttr.hp" name="hp" step="1" type="range" class="span8" required>
+                                        <output>{{produto.equipAttr.hp}}</output>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="str">Força:</label>
+                                        <input id="str" max="99" min="0" data-ng-model="produto.equipAttr.str" name="str" step="1" type="range" class="span8" required>
+                                        <output>{{produto.equipAttr.str}}</output>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="agi">Agilidade:</label>
+                                        <input id="agi" max="99" min="0" data-ng-model="produto.equipAttr.agi" name="agi" step="1" type="range" class="span8" required>
+                                        <output>{{produto.equipAttr.agi}}</output>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="vit">Vitalidade:</label>
+                                        <input id="vit" max="99" min="0" data-ng-model="produto.equipAttr.vit" name="vit" step="1" type="range" class="span8" required>
+                                        <output>{{produto.equipAttr.vit}}</output>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="int">Inteligencia:</label>
+                                        <input id="int" max="99" min="0" data-ng-model="produto.equipAttr.int" name="int" step="1" type="range" class="span8" required>
+                                        <output>{{produto.equipAttr.int}}</output>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="dex">Destreza:</label>
+                                        <input id="dex" max="99" min="0" data-ng-model="produto.equipAttr.dex" name="dex" step="1" type="range" class="span8" required>
+                                        <output>{{produto.equipAttr.dex}}</output>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="luk">Sorte:</label>
+                                        <input id="luk" max="99" min="0" data-ng-model="produto.equipAttr.luk" name="luk" step="1" type="range" class="span8" required>
+                                        <output>{{produto.equipAttr.luk}}</output>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <div class="form-actions">
+                                        <div class="span3"></div>
+                                        <div class="span9 controls">
+                                            <button type="submit" class="btn marginR10" data-ng-click="adicionar(produto)" data-ng-disabled="produtoForm.$invalid">Salvar</button>
+                                            <button data-ng-click="cancelar()" class="btn btn-danger" >Cancelar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div><!-- End .box -->
+        </div><!-- End .span12 -->
+    </div><!-- End .row-fluid -->
+</div><!-- End contentwrapper -->

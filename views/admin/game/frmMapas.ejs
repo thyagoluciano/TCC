@@ -1,0 +1,119 @@
+<div class="contentwrapper"><!--Content wrapper-->
+    <div class="heading">
+        <h3>Tileset</h3>
+        <ul class="breadcrumb">
+            <li>
+                <a href="#" class="tip" title="back to dashboard">
+                    <span class="icon16 icomoon-icon-screen-2"></span>
+                </a>
+                <span class="divider">
+                    <span class="icon16 icomoon-icon-arrow-right-2"></span>
+                </span>
+            </li>
+            <li class="active">Cadastrar Mapas</li>
+        </ul>
+    </div><!-- End .heading-->
+
+    <!-- Build page from here: Usual with <div class="row-fluid"></div> -->
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="box">
+                <div class="title">
+                    <h4>
+                        <span>Cadastar Mapas</span>
+                    </h4>
+                </div>
+                <div class="content">
+                    <form class="form-horizontal seperator" id="mapForm" name="mapForm" novalidate data-ng-init="get()">
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span3" for="name">Nome Mapa:</label>
+                                    <input class="span9" id="name" name="name" type="text" placeholder="Digite o nome do Mapa" data-ng-model="mapa.name" data-ng-minlength="4" required/>
+
+                                    <div ng-show="mapForm.name.$dirty && mapForm.name.$invalid" class="formValidacao">
+                                        <span class="erro" ng-show="mapForm.name.$error.required">Digite o nome do Mapa.</span>
+                                        <span class="erro" ng-show="mapForm.name.$error.minlength">Nome de 4 digitos ou mais!</span>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <label class="form-label span3" for="tileWidth">Largura do Tiled:</label>
+                                    <input class="span9" id="tileWidth" name="tileWidth" type="number" placeholder="Digite a Largura dos Tiled" data-ng-model="mapa.tileWidth" required/>
+
+                                    <div ng-show="mapForm.tileWidth.$dirty && mapForm.tileWidth.$invalid" class="formValidacao">
+                                        <span class="erro" ng-show="mapForm.tileWidth.$error.required">Digita a Largura do Tiled</span>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <label class="form-label span3" for="tileHeight">Altura do Tiled:</label>
+                                    <input class="span9" id="tileHeight" name="tileHeight" type="number" placeholder="Digite a Altura dos Tiled" data-ng-model="mapa.tileHeight" required/>
+
+                                    <div ng-show="mapForm.tileHeight.$dirty && mapForm.tileHeight.$invalid" class="formValidacao">
+                                        <span class="erro" ng-show="mapForm.tileHeight.$error.required">Digita a Altura do Tiled</span>
+                                    </div>
+                                </div>
+
+                                <div class="row-fluid" data-ng-repeat="row in layers">
+                                    <label class="form-label span3" for="{{row.name}}">Nome Layer</label>
+                                    <div class="input-append">
+                                        <input class="span9 text" id="{{row.name}}" name="{{row.name}}" size="40" type="text" placeholder="Digite o nome do Layer" data-ng-model="row.value" required>
+                                        <button class="btn" type="button" data-ng-click="addLayer()">Add</button>
+                                    </div>
+                                </div>
+
+                                <div class="row-fluid" data-ng-repeat="row in enemies">
+                                    <label class="form-label span3" for="{{row.name}}">Posição Inimigo</label>
+                                    <div class="input-append">
+                                        <input class="span4 text" id="{{row.name}}_x" name="{{row.name}}_x" size="30" type="number" placeholder="Posição X" data-ng-model="row.xValue" required>
+                                        <input class="span4 text" id="{{row.name}}_y" name="{{row.name}}_y" size="30" type="number" placeholder="Posição Y" data-ng-model="row.yValue" required>
+                                        <button class="btn" type="button" data-ng-click="addEnemy()">Add</button>
+                                    </div>
+                                </div>
+
+                                <!-- ATLAS -->
+                                <div class="row-fluid">
+                                    <label class="form-label span3" for="atlas">Atlas:</label>
+                                    <div class="span9 controls">
+                                        <select name="atlas" data-ng-model="mapa.atlas" data-ng-options="resource.name for resource in buscaAtlas" required>
+                                            <option value="" selected>Selecione um Tiled</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- TILED -->
+                                <div class="row-fluid">
+                                    <label class="form-label span3" for="tiled">Tiled:</label>
+                                    <div class="span9 controls">
+                                        <select name="tiled" data-ng-model="mapa.tilesheet" data-ng-options="resource.name for resource in buscaSprite" required>
+                                            <option value="" selected>Selecione um Tiled</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row-fluid" data-ng-show="imgTile">
+                                    <label class="form-label span3" for="categoria">Imagem Tiled:</label>
+                                    <div class="span9 controls">
+                                        <img src="{{mapa.tilesheet.file}}">
+                                    </div>
+                                </div>
+
+                                <div class="form-row row-fluid">
+                                    <div class="span12">
+                                        <div class="row-fluid">
+                                            <div class="form-actions">
+                                                <div class="span3"></div>
+                                                <div class="span9 controls">
+                                                    <button type="submit" class="btn marginR10" data-ng-click="adicionar(mapa)" data-ng-disabled="mapForm.$invalid">Salvar</button>
+                                                    <button data-ng-click="cancelar()" class="btn btn-danger" >Cancelar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div><!-- End .box -->
+        </div><!-- End .span12 -->
+    </div><!-- End .row-fluid -->
+</div><!-- End contentwrapper -->

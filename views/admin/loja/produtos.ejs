@@ -1,0 +1,88 @@
+<div class="contentwrapper"><!--Content wrapper-->
+
+    <div class="heading">
+
+        <h3>Listar Produtos</h3>
+
+        <ul class="breadcrumb">
+            <li>Você está aqui:</li>
+            <li>
+                <a href="#" class="tip" title="back to dashboard">
+                    <span class="icon16 icomoon-icon-screen-2"></span>
+                </a>
+                <span class="divider">
+                    <span class="icon16 icomoon-icon-arrow-right-2"></span>
+                </span>
+            </li>
+            <li class="active">Listar Produtos</li>
+        </ul>
+
+    </div>
+    <!-- End .heading-->
+
+    <!-- Build page from here: Usual with <div class="row-fluid"></div> -->
+
+    <div class="row-fluid">
+
+        <div class="span12">
+
+            <div class="box gradient">
+
+                <div class="title">
+                    <h4>
+                        <span><a class="btn" href="manager#/loja/produto/novo">Adicionar Produto</a> - Listar Produtos</span>
+                    </h4>
+                </div>
+                <div class="content noPad clearfix">
+                    <table data-ng-init="load()" cellpadding="0" cellspacing="0" border="0"
+                           class="responsive dynamicTable display table table-bordered" width="100%">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>NOME</th>
+                            <th>THUMBS</th>
+                            <th>TIPO</th>
+                            <th>ACTION</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="odd gradeX" data-ng-repeat="row in produtos">
+                            <td>{{$index}}</td>
+                            <td>{{row.name}}</td>
+                            <td>
+                                <span style="width: 34px; height: 34px; margin: 0 auto; background: url({{row.tiled.file}}); background-position: -{{row.thumbs.x}}px -{{row.thumbs.y}}px; display: block"></span>
+                            </td>
+                            <td>{{row.type.name}}</td>
+                            <td>
+                                <div class="controls center">
+                                    <a href="manager#/loja/produto/editar/{{row._id}}" aria-describedby="qtip-17" data-hasqtip="true" title="" oldtitle="Edit task" href="javascript:void(0)" class="tip">
+                                        <span class="icon12 icomoon-icon-pencil"></span>
+                                    </a>
+                                    <a data-ng-click="excluir(row._id)" data-hasqtip="true" title="" oldtitle="Remove task" href="javascript:void(0)" class="tip">
+                                        <span class="icon12 icomoon-icon-remove"></span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+            </div>
+            <!-- End .box -->
+
+        </div>
+        <!-- End .span12 -->
+
+    </div>
+    <!-- End .row-fluid -->
+
+    <!-- Page end here -->
+    </div>
+
+</div><!-- End contentwrapper -->

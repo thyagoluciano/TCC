@@ -1,9 +1,135 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br" data-ng-app="tccApp">
+
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title><%= title %></title>
+    <meta name="author" content="ThyagoLuciano" />
+    <meta name="description" content="Painel administrativo do Projeto MMORPG" />
+    <meta name="keywords" content="thyago luciano, tcc, mmorpg" />
+    <meta name="application-name" content="Painel Administrativo Projeto TCC FPU" />
+
+    <!-- Mobile Specific Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Le styles -->
+    <link href="/adm/css/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="/adm/css/bootstrap/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="/adm/css/supr-theme/jquery.ui.supr.css" rel="stylesheet" type="text/css"/>
+    <link href="/adm/css/icons.css" rel="stylesheet" type="text/css" />
+    <link href="/adm/plugins/forms/uniform/uniform.default.css" type="text/css" rel="stylesheet" />
+
+    <!-- Main stylesheets -->
+    <link href="/adm/css/main.css" rel="stylesheet" type="text/css" />
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/adm/images/thyagoluciano.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/adm/images/apple-touch-icon-144-precomposed.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/adm/images/apple-touch-icon-114-precomposed.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/adm/images/apple-touch-icon-72-precomposed.png" />
+    <link rel="apple-touch-icon-precomposed" href="/adm/images/apple-touch-icon-57-precomposed.png" />
+
+    <style type="text/css">
+
+    </style>
+
 </head>
-<body>
-    <h1>ADMIN</h1>
+
+<body class="loginPage">
+
+<div class="container-fluid" data-ng-controller="adminCtrl">
+    <div class="container">
+        <div style="width: 300px; margin: 0 auto">
+            <img src="/adm/images/thyagolucianologo.png" alt="Thyago Luciano"/>
+        </div>
+    </div>
+    <div class="loginContainer">
+        <!--<p>-->
+            <!--username.$error = {{loginForm.username.$error}}<br>-->
+            <!--password.$error = {{loginForm.password.$error}}<br>-->
+            <!--<br>-->
+            <!--Form.$valid = {{loginForm.$valid}}-->
+        <!--</p>-->
+        <form class="form-horizontal" id="loginForm" name="loginForm" novalidate>
+            <div class="form-row row-fluid">
+                <div class="span12">
+                    <div class="row-fluid">
+                        <label class="form-label span12" for="username">
+                            Email:
+                            <span class="icon16 icomoon-icon-user-3 right gray marginR10"></span>
+                        </label>
+                        <input class="span12" id="username" type="email" name="username" placeholder="Digite seu e-mail" data-ng-model="usuario.username" required/>
+                        <div ng-show="loginForm.username.$dirty && loginForm.username.$invalid" class="formValidacao">
+                            <span ng-show="loginForm.username.$error.required">Digite seu Email.</span>
+                            <span ng-show="loginForm.username.$error.email">Email inválido.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row row-fluid">
+                <div class="span12">
+                    <div class="row-fluid">
+                        <label class="form-label span12" for="password">
+                            Senha:
+                            <span class="icon16 icomoon-icon-locked right gray marginR10"></span>
+                        </label>
+                        <input data-ng-model="usuario.password" class="span12" id="password" type="password" name="password" placeholder="Digite sua Senha" data-ng-minlength="6" required/>
+                        <div ng-show="loginForm.password.$dirty && loginForm.password.$invalid" class="formValidacao">
+                            <span ng-show="loginForm.password.$error.required">Digite seu Senha.</span>
+                            <span ng-show="loginForm.password.$error.minlength">Sua senha tem que conter pelo menos 6 digitos!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row row-fluid">
+                <div class="span12">
+                    <div class="row-fluid">
+                        <div class="form-actions">
+                            <div class="span12 controls">
+                                <button type="submit" class="btn btn-info right" id="loginBtn" data-ng-click="logar(usuario)" data-ng-disabled="loginForm.$invalid"><span class="icon16 icomoon-icon-enter white"></span> Login</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</div><!-- End .container-fluid -->
+
+<!-- Le javascript
+================================================== -->
+<!-- AngularJS -->
+<script type="text/javascript" src="/lib/angular/angular.min.js"></script>
+<script type="text/javascript" src="/lib/angular-cookies/angular-cookies.min.js"></script>
+<script type="text/javascript" src="/lib/angular-resource/angular-resource.min.js"></script>
+<script type="text/javascript" src="/lib/angular-route/angular-route.min.js"></script>
+
+<!-- Angular UI -->
+<script type="text/javascript" src="/lib/angular-bootstrap/ui-bootstrap.js"></script>
+<script type="text/javascript" src="/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script type="text/javascript" src="/lib/angular-ui-utils/ui-utils.min.js"></script>
+
+<!-- Application -->
+<script type="text/javascript" src="/js/admin/app.js"></script>
+<script type="text/javascript" src="/js/services.js"></script>
+<script type="text/javascript" src="/js/admin/adminControllers.js"></script>
+
+<script  type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="/adm/js/bootstrap/bootstrap.js"></script>
+<script type="text/javascript" src="/adm/plugins/misc/touch-punch/jquery.ui.touch-punch.min.js"></script>
+<script type="text/javascript" src="/adm/plugins/misc/ios-fix/ios-orientationchange-fix.js"></script>
+<script type="text/javascript" src="/adm/plugins/forms/validate/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/adm/plugins/forms/uniform/jquery.uniform.min.js"></script>
+
 </body>
 </html>

@@ -1,4 +1,73 @@
 angular.module('tccApp.services', ['ngResource'])
+    .factory('CategoriaFactory', function($resource){
+        return $resource(
+            'http://localhost:3000/api/categoria/:id', {
+                id: '@id'
+            },
+            {
+                update: {
+                    method: 'PUT',
+                    url: 'http://localhost:3000/api/categoria/:id'
+                },
+                findById: {
+                    method: 'GET',
+                    url: 'http://localhost:3000/api/categoria/:id'
+                }
+            }
+        );
+    })
+    .factory('ProdutoFactory', function($resource){
+        return $resource(
+            'http://localhost:3000/api/produto/:id', {
+                id: '@id'
+            },
+            {
+                update: {
+                    method: 'PUT',
+                    url: 'http://localhost:3000/api/produto/:id'
+                },
+                findById: {
+                    method: 'GET',
+                    url: 'http://localhost:3000/api/produto/:id'
+                }
+            }
+        );
+    })
+    .factory('UploadFactory', function($resource){
+        return $resource(
+            'http://localhost:3000/api/upload/:id', {
+                id: '@id'
+            },
+            {
+                findById: {
+                    method: 'GET',
+                    url: 'http://localhost:3000/api/upload/:id'
+                },
+                findByType: {
+                    method: 'GET',
+                    url: 'http://localhost:3000/api/upload/type/:id'
+                }
+            }
+
+        );
+    })
+    .factory('MapFactory', function($resource){
+        return $resource(
+            'http://localhost:3000/api/map/:id', {
+                id: '@id'
+            },
+            {
+                update: {
+                    method: 'PUT',
+                    url: 'http://localhost:3000/api/map/:id'
+                },
+                findById: {
+                    method: 'GET',
+                    url: 'http://localhost:3000/api/map/:id'
+                }
+            }
+        );
+    })
     .factory('ajaxService', ['$http', function($http){
         return {
             getDataBy: function(url, callback){

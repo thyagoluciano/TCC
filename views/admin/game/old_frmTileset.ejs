@@ -1,0 +1,90 @@
+<div class="contentwrapper"><!--Content wrapper-->
+    <div class="heading">
+        <h3>Tileset</h3>
+        <ul class="breadcrumb">
+            <li>
+                <a href="#" class="tip" title="back to dashboard">
+                    <span class="icon16 icomoon-icon-screen-2"></span>
+                </a>
+                <span class="divider">
+                    <span class="icon16 icomoon-icon-arrow-right-2"></span>
+                </span>
+            </li>
+            <li class="active">Cadastrar Tileset</li>
+        </ul>
+    </div><!-- End .heading-->
+
+    <!-- Build page from here: Usual with <div class="row-fluid"></div> -->
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="box">
+                <div class="title">
+                    <h4>
+                        <span>Cadastar Tileset</span>
+                    </h4>
+                </div>
+                <div class="content">
+                    <form class="form-horizontal seperator" id="tileForm" name="tileForm" novalidate>
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span3" for="name">Nome Tileset:</label>
+                                    <input class="span9" id="name" name="name" type="text" placeholder="Digite o nome do Tile" data-ng-model="tile.name" data-ng-minlength="4" required/>
+
+                                    <div ng-show="tileForm.name.$dirty && tileForm.name.$invalid" class="formValidacao">
+                                        <span class="erro" ng-show="tileForm.name.$error.required">Digite o nome do Tiled.</span>
+                                        <span class="erro" ng-show="tileForm.name.$error.minlength">Nome de 4 digitos ou mais!</span>
+                                    </div>
+                                </div>
+                                <!-- CATEGORIA -->
+                                <div class="row-fluid">
+                                    <label class="form-label span3" for="tipo">Tipo Tiled:</label>
+                                    <div class="span9 controls">
+                                        <select name="tipo" data-ng-model="tile.type">
+                                            <option value="" selected>Selecione um Tipo</option>
+                                            <option value="mapa">Mapa</option>
+                                            <option value="enemy">Inimigos</option>
+                                            <option value="hero">Player</option>
+                                            <option value="itens">Itens</option>
+                                            <option value="equips">Equipamentos</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <label class="form-label span3" for="name">Imagem Tileset:</label>
+                                    <img class="img-rounded" src="/assets/sprite/{{tile.file}}" width="200" height="200" data-ng-show="showImg">
+                                    <img class="img-rounded" src="http://placehold.it/200x200" width="200" height="200" data-ng-hide="showImg">
+                                </div>
+                                <div class="row-fluid">
+                                    <br />
+                                    <label class="form-label span3" for="name"></label>
+                                    <input type="hidden" name="fileName" data-ng-model="tile.file">
+                                    <input class="span9" type="file" ng-file-select="onFileSelect($files, 'img')" >
+                                </div>
+                                <div class="row-fluid" data-ng-show="showAtlas">
+                                    <br />
+                                    <label class="form-label span3" for="name">Atlas:</label>
+                                    <input type="hidden" name="atlasName" data-ng-model="tile.atlas">
+                                    <input class="span9" type="file" ng-file-select="onFileSelect($files, 'atlas')" >
+                                </div>
+                                <div class="form-row row-fluid">
+                                    <div class="span12">
+                                        <div class="row-fluid">
+                                            <div class="form-actions">
+                                                <div class="span3"></div>
+                                                <div class="span9 controls">
+                                                    <button type="submit" class="btn marginR10" data-ng-click="adicionar(tile)" data-ng-disabled="tileForm.$invalid">Salvar</button>
+                                                    <button data-ng-click="cancelar()" class="btn btn-danger" >Cancelar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div><!-- End .box -->
+        </div><!-- End .span12 -->
+    </div><!-- End .row-fluid -->
+</div><!-- End contentwrapper -->

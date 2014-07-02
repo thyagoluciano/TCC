@@ -9,7 +9,7 @@
     Itens.prototype = {
         create: function(data, tmpId){
             // Adiciona o over, para auxiliar na batalha.
-            this.item = this.game.add.sprite(data.position.x, data.position.y, 'itens', data.item.position);
+            this.item = this.game.add.sprite(data.position.x, data.position.y, 'itens', tmpId);
             this.item.id = tmpId;
             this.item.properties = data.item;
             this.game.physics.enable(this.item, Phaser.Physics.ARCADE);

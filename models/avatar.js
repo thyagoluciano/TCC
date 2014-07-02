@@ -5,6 +5,7 @@ var connection = require('./connection');
 var mongoose    = connection.mongoose,
     Schema      = mongoose.Schema;
 
+// Schema Avatar
 var AvatarSchema  = new Schema({
     name: {type: String, unique: true},
     gender: {type: String, default: 'M'},
@@ -139,7 +140,7 @@ exports.getByUser = function(req, res){
  */
 exports.create = function(req, res){
     var data = req.body;
-    data.attributes.level = 1;
+        data.attributes.level = 1;
 
     var dados = {
         name:       data.name,

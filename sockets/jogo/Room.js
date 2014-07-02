@@ -17,9 +17,7 @@ Room.prototype = {
     },
 
     setItens: function(itens){
-
-//        for(var i = 0; i < itens.length; i++){
-        for(var i = 0; i < 1; i++){
+        for(var i = 0; i < itens.length; i++){
             var tmpItem = new this.Itens();
                 tmpItem.create(itens[i], i);
 
@@ -79,10 +77,6 @@ Room.prototype = {
 
     getProperties: function(){
         return this.properties;
-    },
-
-    getTeste: function(){
-        return 'Teste Room';
     }
 }
 

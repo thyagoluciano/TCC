@@ -8,6 +8,8 @@ var express = require('express'),
 var http = require('http');
 var path = require('path');
 
+var fs = require('fs');
+
 var app = express();
 
 
@@ -26,6 +28,7 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(cookie);
 app.use(session);
+app.use(express.bodyParser({uploadDir: path.join(__dirname, 'public/assets/uploads')}));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());

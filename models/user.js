@@ -9,6 +9,7 @@ var UserSchema  = new Schema({
     name: {type: String, default: ''},
     email: {type: String, default: '', unique: true},
     password: {type: String, default: ''},
+    cpf: {type: String, unique: true},
     facebook: {},
     twitter: {},
     github: {},

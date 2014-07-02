@@ -158,6 +158,7 @@
 //        },
 
         _create: function(data){
+
             // Renderiza o MAPA
             this.map = new Mapa(this.game);
             this.map.create(data);
@@ -334,10 +335,8 @@
          */
         // DROPA ITENS
         _dropItem: function(data){
-            var tmpId = (this.itens.length + 1);
-
             var tmpItem = new Itens(this.game, this.socket);
-                tmpItem.create(data, tmpId);
+                tmpItem.create(data, data.itemId);
 
             this.itens.push(tmpItem);
         },

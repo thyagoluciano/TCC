@@ -4,7 +4,7 @@ module.exports = function(app){
     var autenticar = require('./../middleware/autenticador');
     var user = app.controllers.api.user;
 
-    app.get('/api/users', user.list);
+    app.get('/api/users', autenticar, user.list);
     app.get('/api/users/:id', user.get);        // Lista Usuário pelo ID
     app.get('/api/users/:email/:password', user.login);
     app.get('/api/session', autenticar, user.getSession);

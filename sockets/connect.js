@@ -15,11 +15,20 @@ module.exports = function(io){
     var tmpUsers = ['thyago.luciano', 'karina.felix'];
     var ctrl = 0;
 
-    // Inicia a conexão via Socket
+    // Array de Sockets para serpar os eventos
+    var Server = require('./Server');
+
+    var listSockets = [];
+        listSockets['Server']  = new Server();
+
     sockets.on('connection', function( client ){
         console.log('Novo Cliente Connectado: ' + client.id);
 
         initVar(client.id);// Inicia as Variaveis do game
+
+        // EventHandlers
+        listSockets['Server'].setEventHandlers(client);
+
 
         // Disconnect
         client.on("disconnect", onClientDisconnect);
@@ -35,24 +44,18 @@ module.exports = function(io){
         client.on('player:death', onDeathPlayer);
 
 
-        /**
-         * SOCKETS INIMIGO
-         */
+//         SOCKETS INIMIGO
         client.on('enemy:battleAnimation', onBattleAnimationEnemy);
         client.on('enemy:stop', onStopEnemy);
         client.on('enemy:changeHP', onChangeEnemyHP);
         client.on('enemy:death', onDeathEnemy);
 
 
-        /**
-         * SOCKETS ITENS
-         */
+//         SOCKETS ITENS
         client.on('item:drop', onDropItem);
         client.on('item:remove', onRemoveItem);
 
-        client.on('teste', function(data){
-            console.log(client.id, data);
-        });
+
     });
 
     // Metodo que inicializa as variaveis do Game
@@ -61,7 +64,7 @@ module.exports = function(io){
         var player = new Player(io, tmpUsers[ctrl]);
             player.create(socketId); // Cria o Player
 
-        players.push(player);
+            players.push(player);
 
         // Controle temporario
         if(ctrl == 1){
@@ -76,7 +79,7 @@ module.exports = function(io){
         util.log("Player has disconnected: " + this.id);
 
         var tmpPlayer = playerById(this.id, players);
-            tmpPlayer.savePlayer(); // Salva as propriedades do player no banco de dados
+        tmpPlayer.savePlayer(); // Salva as propriedades do player no banco de dados
 
         var room = tmpPlayer.getRoom();
 
@@ -245,9 +248,7 @@ module.exports = function(io){
         this.broadcast.to(data.room).emit('enemy:death', {id: tmpEnemy.getId()});
     }
 
-    /**
-     * METODOS ITENS
-     */
+//     METODOS ITENS
 
     function onDropItem(data){
         var itens = maps.getRoom(data.room).getItens();

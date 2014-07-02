@@ -6,7 +6,7 @@ function Item(){
 Item.prototype = {
     create: function(item, itemId){
         this.item = item;
-        this.itemId = itemId;
+        this.itemId = item.tiledPosition;
     },
 
     getId: function(){
