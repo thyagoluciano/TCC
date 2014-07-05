@@ -127,7 +127,7 @@
             }
         },
 
-        changeHP: function(value, remote){
+        changeHP: function(value){
             this.attr.attributes.hp = this.attr.attributes.hp + (value);
             this.hp.setText(this.attr.attributes.hp);
 
@@ -159,6 +159,11 @@
 
         getId: function(){
             return this.id;
+        },
+
+        _changeHP: function(value){
+            this.attr.attributes.hp = value;
+            this.hp.setText('HP: ' + this.attr.attributes.hp);
         },
 
         setHP: function(hp){

@@ -124,7 +124,7 @@ angular.module('tccApp.controllers', ['tccApp.services', 'angularFileUpload'])
             $location.path('/loja/categoria');
         }
     }])
-    .controller('adminProdutosController', ['$scope', 'ProdutoFactory', 'CategoriaFactory', 'ajaxService', '$routeParams', '$location', function($scope, ProdutoFactory, CategoriaFactory, ajaxService, $routeParams, $location){
+    .controller('adminProdutosController', ['$scope', 'ProdutoFactory', 'CategoriaFactory', 'UploadFactory', 'ajaxService', '$routeParams', '$location', function($scope, ProdutoFactory, CategoriaFactory, UploadFactory, ajaxService, $routeParams, $location){
 
         $scope.produto = {};
         $scope.produto.equipAttr = {
@@ -140,13 +140,46 @@ angular.module('tccApp.controllers', ['tccApp.services', 'angularFileUpload'])
             luk: 0
         }
 
+        $scope.equips = false;
         $scope.imgTile = false;
+
         var url = 'http://localhost:3000/api/upload/type/sprite';
         ajaxService.getDataBy(url, function(data){
             if(data !== null){
                 $scope.tileds = data;
             }
         });
+
+        $scope.buscaAtlas = [];
+        $scope.buscaSprite = [];
+
+        UploadFactory.query(
+            {},
+            {},
+            function(data, status, headers, config){
+                for(var i = 0; i < data.length; i++){
+                    if(data[i].type == 'atlas'){
+                        $scope.buscaAtlas.push(data[i]);
+                    }else{
+                        $scope.buscaSprite.push(data[i]);
+                    }
+                }
+            },
+            function(data , status, headers, config){
+                alert('Ocorreu um erro: ' + data);
+            }
+        );
+
+        $scope.$watch('produto.categoria', function(newVal) {
+            if(newVal){
+                if (newVal.name == 'equip') {
+                    $scope.equips = true;
+                }else{
+                    $scope.equips = false;
+                }
+            }
+        });
+
 
         $scope.$watch('produto.tiled', function(newVal) {
             if (newVal) {
@@ -209,6 +242,7 @@ angular.module('tccApp.controllers', ['tccApp.services', 'angularFileUpload'])
          * @param tiled
          */
         $scope.adicionar = function(produto){
+
             if(produto){
                 if(produto._id){
                     var _id = produto._id;
@@ -448,7 +482,7 @@ angular.module('tccApp.controllers', ['tccApp.services', 'angularFileUpload'])
                     {id: _id},
                     function(data, status, headers, config){
                         if(data !== null){
-                            $scope.mapa = data;
+//                            $scope.mapa = data;
                             console.log(data);
                         }
                     },
@@ -515,7 +549,127 @@ angular.module('tccApp.controllers', ['tccApp.services', 'angularFileUpload'])
         }
 
         $scope.cancelar = function(){
-            $scope.produto = {};
+            $scope.map = {};
             $location.path('/game/mapa');
         }
+    }])
+    .controller('enemyGameController', [ '$scope', 'EnemyFactory', 'MapFactory', 'UploadFactory' ,'$location', '$routeParams', function($scope, EnemyFactory, MapFactory, UploadFactory, $location, $routeParams){
+        $scope.imgTile = false;
+        $scope.buscaAtlas = [];
+        $scope.buscaSprite = [];
+
+        $scope.enemy = {};
+        $scope.enemy.attributes = {
+            str: 0,
+            str: 0,
+            agi: 0,
+            vit: 0,
+            int: 0,
+            dex: 0,
+            luk: 0,
+            level: 0
+        }
+
+        UploadFactory.query(
+            {},
+            {},
+            function(data, status, headers, config){
+                for(var i = 0; i < data.length; i++){
+                    if(data[i].type == 'atlas'){
+                        $scope.buscaAtlas.push(data[i]);
+                    }else{
+                        $scope.buscaSprite.push(data[i]);
+                    }
+                }
+            },
+            function(data , status, headers, config){
+                alert('Ocorreu um erro: ' + data);
+            }
+        );
+
+        $scope.$watch('enemy.tilesheet', function(newVal) {
+            if (newVal) {
+                $scope.imgTile = true;
+            }else{
+                $scope.imgTile = false;
+            }
+        });
+
+
+        // Carrega as Rooms
+        $scope.rooms = MapFactory.query();
+
+
+        $scope.get = function(){
+            var _id = $routeParams.id
+
+            if(_id){
+                EnemyFactory.findById(
+                    {id: _id},
+                    function(data, status, headers, config){
+                        if(data !== null){
+//                            $scope.mapa = data;
+                            console.log(data);
+                        }
+                    },
+                    function(data , status, headers, config){
+                        alert('Ocorreu um erro: ' + data);
+                    }
+                );
+            }
+        }
+
+
+        $scope.adicionar = function(enemy){
+
+            if(enemy){
+                if(enemy._id){
+                    var _id = enemy._id;
+
+                    delete enemy._id;
+
+                    EnemyFactory.update(
+                        {id: _id},
+                        enemy,
+                        function(data, status, headers, config){
+                            alert('Mapa atualizado com sucesso!');
+                            $location.path('/game/inimigo');
+                        },
+                        function(data , status, headers, config){
+                            console.log('Erro');
+                            console.log(data);
+                        }
+                    );
+
+                }else{
+                    EnemyFactory.save(
+                        {},
+                        enemy,
+                        function(data, status, headers, config){
+                            alert('Mapa Cadastrada com Sucesso!');
+                            $location.path('/game/inimigo');
+                        },
+                        function(data , status, headers, config){
+                            console.log('Ocorreu um erro: ', data);
+                        }
+                    );
+                }
+            }
+        }
+
+
+        /**
+         * Load Enemies
+         */
+        $scope.load = function(){
+            $scope.enemy = EnemyFactory.query();
+        };
+
+        /**
+         * Cancelar
+         */
+        $scope.cancelar = function(){
+            $scope.enemy = {};
+            $location.path('/game/inimigo');
+        };
     }]);

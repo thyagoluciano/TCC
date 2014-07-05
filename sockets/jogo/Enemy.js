@@ -15,6 +15,8 @@ Enemy.prototype = {
         var calc = new this.Calc(enemy);
 
         this.enemy = calc.getAttr();
+
+//        console.log(this.enemy);
         this.id = enemy._id;
     },
 

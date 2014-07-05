@@ -59,6 +59,10 @@ Room.prototype = {
         this.enemies.push(enemy);
     },
 
+    removeEnemy: function(enemy){
+        this.enemies.splice(this.enemies.indexOf(enemy), 1);
+    },
+
     removePerson: function(person){
         this.peoples.splice(this.peoples.indexOf(person), 1);
     },

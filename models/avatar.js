@@ -9,7 +9,10 @@ var mongoose    = connection.mongoose,
 var AvatarSchema  = new Schema({
     name: {type: String, unique: true},
     gender: {type: String, default: 'M'},
+    room: {type: String},
+    frame: {type: Number},
     sprite: {type: Number},
+    direction: { type: Boolean},
     attributes: {
         str: {type: Number, min: 0,     max: 99,    require: true},
         agi: {type: Number, min: 0,     max: 99,    require: true},

@@ -43,6 +43,7 @@ Player.prototype = {
         this.player = calc.getAttr();
         this.player = this.player.toObject();
         this.player.id = this.id;
+        console.log(this.player);
     },
 
     getId: function(){

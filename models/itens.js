@@ -6,7 +6,7 @@ var mongoose    = connection.mongoose,
     Schema      = mongoose.Schema;
 
 var ItensSchema  = new Schema({
-    name: {type: String},
+    name: {type: String, unique: true},
     type: {},
     tiled: {},
     tiledPosition: {type: Number},
@@ -24,6 +24,11 @@ var ItensSchema  = new Schema({
     price: {
         real: {type: String},
         virtual: {type: String}
+    },
+    spriteSheet: {
+        type: {},
+        atlas: {},
+        tilesheet: {}
     }
 });
 
@@ -89,8 +94,15 @@ exports.create = function(req, res){
         type:           data.categoria,
         tiled:          data.tiled,
         tiledPosition:  data.tiledPosition,
-        price:          data.price
+        price:          data.price,
+        spriteSheet: {
+            type: data.typeEquip,
+            atlas: data.atlas,
+            tilesheet: data.tilesheet
+        }
     };
+
+    console.log(dados);
 
     var itens = new Itens(dados);
 
@@ -107,7 +119,21 @@ exports.update = function(req, res){
     var id = req.params.id;
     var data = req.body;
 
-    Itens.update({_id: id}, data, function(err, data){
+    var dados = {
+        name:           data.name,
+        equipAttr:      data.equipAttr,
+        type:           data.categoria,
+        tiled:          data.tiled,
+        tiledPosition:  data.tiledPosition,
+        price:          data.price,
+        spriteSheet: {
+            type: data.typeEquip,
+            atlas: data.atlas,
+            tilesheet: data.tilesheet
+        }
+    };
+
+    Itens.update({_id: id}, dados, function(err, data){
         if(err){
             res.json(err);
         }else{

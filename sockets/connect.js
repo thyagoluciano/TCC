@@ -204,6 +204,7 @@ module.exports = function(io){
 
     // Metodo que para a animação de batalha do Inimigo
     function onStopEnemy(data){
+
         var enemies = maps.getRoom(data.room).getEnemies();
 
         var tmpEnemy = playerById(data.id, enemies);
@@ -228,7 +229,8 @@ module.exports = function(io){
             return;
         };
 
-        tmpEnemy.setHp(data.value);
+        tmpEnemy.setHp(data.hp);
+
 
         this.broadcast.to(data.room).emit('enemy:changeHP', {id: tmpEnemy.getId(), hp: tmpEnemy.getHp()});
     }
@@ -246,6 +248,8 @@ module.exports = function(io){
         };
 
         this.broadcast.to(data.room).emit('enemy:death', {id: tmpEnemy.getId()});
+
+        maps.getRoom(data.room).removeEnemy(tmpEnemy);
     }
 
 //     METODOS ITENS

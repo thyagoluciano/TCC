@@ -21,7 +21,7 @@
         this.enemy;
 
         // Equipamentos
-        this.weapon;
+        this.equips = [];
     };
 
     Player.prototype = {
@@ -42,15 +42,12 @@
             // Adiciona textos
             this.addText();
 
-            // Adiciona Equipamentos
-            this.weapon = new Dagger(this.game, this.user.attributes.aspd);
-            this.weapon.create();
-            this.player.addChild(this.weapon.dagger);
-
             // Adiciona sprites e objetos filhos do Player
             this.player.addChild(this.name);
             this.player.addChild(this.hp);
             this.player.addChild(this.over);
+
+            this.addEquipPlayer();
 
             // Adiciona as animações do Sprite
             this.player.animations.add('left',      Phaser.Animation.generateFrameNames('left', 0, 8, '', 4), 10);
@@ -70,6 +67,20 @@
 
             // Cria o Cursos para controlar os movimentos do Player
             this.cursors = this.game.input.keyboard.createCursorKeys();
+        },
+
+        addEquipPlayer: function(){
+            // Adiciona Equipamentos
+            if(this.user.equipment){
+                for(var k in this.user.equipment){
+//                    console.log(this.user.equipment[k]);
+                    var tmpEquip = new EquipFactory(this.game);
+                    tmpEquip.init(this.user.equipment[k]);
+
+                    this.equips.push(tmpEquip);
+                    this.player.addChild(tmpEquip.equip.equip);
+                }
+            }
         },
 
         update: function(){
@@ -104,14 +115,15 @@
                 direction = 'down';
             }
 
-            if(direction)
-                this.weapon.dagger.animations.play('dagger_false', 10, true);
+            if(direction){
+                for(var k in this.equips){
+                    this.equips[k].equip.equip.animations.play(direction);
+                }
+            }
+
 
             // Verifica se existe uma battle
             this.battle();
-
-            // Atualiza Weapon
-            this.weapon.update();
 
             // Atualiza a posição de (x, y) e o frame
             this.user.position.x = this.player.body.x;
@@ -128,25 +140,13 @@
         },
 
         _batleAnimations: function(direction){
-            var weapon = this.user.equipment.weapon.type;
+//            var weapon = this.user.equipment.weapon.type;
+            var weapon = 'dagger';
 
-            switch (direction){
-                case '_left':
-                    this.player.animations.play(weapon + '_left', this.user.attributes.aspd, true);
-                    this.weapon.dagger.animations.play(weapon + '_left', this.user.attributes.aspd, true);
-                    break;
-                case '_right':
-                    this.player.animations.play(weapon + '_right', this.user.attributes.aspd, true);
-                    this.weapon.dagger.animations.play(weapon + '_right', this.user.attributes.aspd, true);
-                    break;
-                case '_up':
-                    this.player.animations.play(weapon + '_up',this.user.attributes.aspd,true);
-                    this.weapon.dagger.animations.play(weapon + '_up', this.user.attributes.aspd, true);
-                    break;
-                case '_down':
-                    this.player.animations.play(weapon + '_down', this.user.attributes.aspd, true);
-                    this.weapon.dagger.animations.play(weapon + '_down', this.user.attributes.aspd, true);
-                    break;
+            this.player.animations.play(weapon + direction, this.user.attributes.aspd, true);
+
+            for(var k in this.equips){
+                this.equips[k].equip.equip.animations.play(weapon + direction, this.user.attributes.aspd, true);
             }
         },
 
@@ -155,26 +155,35 @@
             this.player.body.velocity.x = 0;
             this.player.body.velocity.y = 0;
 
-            if(this.user.direction)
-                this.weapon.dagger.animations.play('dagger_false', 10, true);
+            var direction = false;
 
             switch (this.user.direction){
                 case 'left':
                     this.player.animations.play('left');
                     this.player.body.velocity.x = -150;
+                    direction = 'left';
                     break;
                 case 'right':
                     this.player.animations.play('right');
                     this.player.body.velocity.x = 150;
+                    direction = 'right';
                     break;
                 case 'up':
                     this.player.animations.play('up');
                     this.player.body.velocity.y = -150;
+                    direction = 'up';
                     break;
                 case 'down':
                     this.player.animations.play('down');
                     this.player.body.velocity.y = 150;
+                    direction = 'down';
                     break;
+            }
+
+            if(direction){
+                for(var k in this.equips){
+                    this.equips[k].equip.equip.animations.play(direction);
+                }
             }
         },
 
@@ -188,30 +197,29 @@
         },
 
         battleAnimations: function(enemy, remote){
-            var weapon = this.user.equipment.weapon.type;
+//            var weapon = this.user.equipment.weapon.type;
+            var weapon = 'dagger';
             var direction = false;
-
-            this.weapon.direction  = 'false';
 
             this.enemy = enemy;
 
             // Anima o player
             if(this.player.body.touching.left){
-                this.player.animations.play(weapon + '_left', this.user.attributes.aspd, true);
-                this.weapon.dagger.animations.play(weapon + '_left', this.user.attributes.aspd, true);
                 direction = '_left';
             }else if(this.player.body.touching.right){
-                this.player.animations.play(weapon + '_right', this.user.attributes.aspd, true);
-                this.weapon.dagger.animations.play(weapon + '_right', this.user.attributes.aspd, true);
                 direction = '_right';
             }else if(this.player.body.touching.up){
-                this.player.animations.play(weapon + '_up',this.user.attributes.aspd,true);
-                this.weapon.dagger.animations.play(weapon + '_up', this.user.attributes.aspd, true);
                 direction = '_up';
             }else if(this.player.body.touching.down){
-                this.player.animations.play(weapon + '_down', this.user.attributes.aspd, true);
-                this.weapon.dagger.animations.play(weapon + '_down', this.user.attributes.aspd, true);
                 direction = '_down';
+            }
+
+            this.player.animations.play(weapon + direction, this.user.attributes.aspd, true);
+
+            if(direction){
+                for(var k in this.equips){
+                    this.equips[k].equip.equip.animations.play(weapon + direction, this.user.attributes.aspd, true);
+                }
             }
 
             if(remote){
@@ -245,6 +253,11 @@
 
         death: function(remote){
             this.player.animations.play('death', 10, false, true);
+
+            for(var k in this.equips){
+                this.equips[k].equip.equip.animations.play('death', 10, false, true);
+            }
+
             this.over.kill();
 
             if(remote){
@@ -254,7 +267,10 @@
 
         stop: function(remote){
             this.player.animations.stop();
-            this.weapon.stop();
+
+            for(var k in this.equips){
+                this.equips[k].equip.stop()
+            }
 
             if(remote){
                 this.socket.emit('player:stop', {id: this.user.id});

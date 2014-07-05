@@ -27,11 +27,9 @@
 //                        this.game.physics.enable(this.layer[i], Phaser.Physics.ARCADE);
 //                    }
                     this.map.setCollision(24, true, map.layers[i].name);
-                    this.map.setCollision(27, true, map.layers[i].name, function(){
-                        console.log('Portal');
-                    });
+                    this.map.setCollision(27, true, map.layers[i].name);
                     // Adiciona a Fisica na layer que possuira colisão
-                    this.game.physics.enable(this.layer[i], Phaser.Physics.ARCADE);
+//                    this.game.physics.enable(this.layer[i], Phaser.Physics.ARCADE);
 
 //                    this.map.layers[i].visibility = false;
 //                }

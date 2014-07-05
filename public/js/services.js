@@ -68,6 +68,23 @@ angular.module('tccApp.services', ['ngResource'])
             }
         );
     })
+    .factory('EnemyFactory', function($resource){
+        return $resource(
+            'http://localhost:3000/api/enemy/:id', {
+                id: '@id'
+            },
+            {
+                update: {
+                    method: 'PUT',
+                    url: 'http://localhost:3000/api/enemy/:id'
+                },
+                findById: {
+                    method: 'GET',
+                    url: 'http://localhost:3000/api/enemy/:id'
+                }
+            }
+        );
+    })
     .factory('ajaxService', ['$http', function($http){
         return {
             getDataBy: function(url, callback){

@@ -5,7 +5,7 @@ Calc = function(attr){
 Calc.prototype = {
     calcHP: function(){
         // Adiciona formula de calculo de HP
-        var hp = [([(35 + this.attr.attributes.level*10 + this.calculaSomaNivel(this.attr.attributes.level) * 0.5)*(1 + this.attr.attributes.vit/100)] + this.getHPAdditions() )];
+        var hp = ((((35 + this.attr.attributes.level*10 + this.calculaSomaNivel(this.attr.attributes.level) * 0.5)*(1 + this.attr.attributes.vit/100)) ));
         this.attr.attributes.hp = Math.round(hp);
     },
 
@@ -22,7 +22,7 @@ Calc.prototype = {
 //        console.log('DEX: ' + this.attr.attributes.dex);
 //        console.log('LUK: ' + this.attr.attributes.luk);
 //        console.log('Watk: ' + this.attr.equipment.weapon.atk)
-        var atk = (this.attr.attributes.str + ((this.attr.attributes.str/10)^2) + (this.attr.attributes.dex/5) + (this.attr.attributes.luk/5) + this.getAtkAdditions());
+        var atk = (this.attr.attributes.str + ((this.attr.attributes.str/10)^2) + (this.attr.attributes.dex/5) + (this.attr.attributes.luk/5) );
         this.attr.attributes.atk = Math.round(atk);
 
     },
@@ -42,16 +42,26 @@ Calc.prototype = {
     },
 
     getHPAdditions: function(){
-        return (this.attr.equipment.weapon.hp + this.attr.equipment.torso.hp + this.attr.equipment.legs.hp + this.attr.equipment.head.hp + this.attr.equipment.hands.hp + this.attr.equipment.feet.hp + this.attr.equipment.belt.hp);
+        if(this.attr.equipment.weapon){
+            return (this.attr.equipment.weapon.hp + this.attr.equipment.torso.hp + this.attr.equipment.legs.hp + this.attr.equipment.head.hp + this.attr.equipment.hands.hp + this.attr.equipment.feet.hp + this.attr.equipment.belt.hp);
+        }
+
+        return 0;
     },
 
     getAtkAdditions: function(){
-        return (this.attr.equipment.weapon.atk + this.attr.equipment.torso.atk + this.attr.equipment.legs.atk + this.attr.equipment.head.atk + this.attr.equipment.hands.atk + this.attr.equipment.feet.atk + this.attr.equipment.belt.atk);
+        if(this.attr.equipment.atk){
+            return (this.attr.equipment.weapon.atk + this.attr.equipment.torso.atk + this.attr.equipment.legs.atk + this.attr.equipment.head.atk + this.attr.equipment.hands.atk + this.attr.equipment.feet.atk + this.attr.equipment.belt.atk);
+        }
+
+        return 0;
     },
 
     calculaSomaNivel: function(level){
+
         var somaNivel = 0;
-        for(var i = level.length; i > 0; i--){
+
+        for(var i = level; i > 0; i--){
             somaNivel += i;
         }
 

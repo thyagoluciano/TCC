@@ -33,7 +33,7 @@ angular.module('tccApp', ['ngRoute', 'ngResource', 'tccApp.controllers'])
                 templateUrl: '/angular/admin/loja/frmProdutos',
                 controller: 'adminProdutosController'
             })
-
+            // GAME
             .when('/game', {
                 templateUrl: '/angular/admin/game/categorias',
                 controller: 'adminGameCtrl'
@@ -46,6 +46,7 @@ angular.module('tccApp', ['ngRoute', 'ngResource', 'tccApp.controllers'])
                 templateUrl: '/angular/admin/game/frmTileset',
                 controller: 'adminGameCtrl'
             })
+
             // GAME MAPA
             .when('/game/mapa', {
                 templateUrl: '/angular/admin/game/mapas',
@@ -58,6 +59,20 @@ angular.module('tccApp', ['ngRoute', 'ngResource', 'tccApp.controllers'])
             .when('/game/mapa/editar/:id', {
                 templateUrl: '/angular/admin/game/frmMapas',
                 controller: 'mapGameController'
+            })
+
+            // GAME MAPA
+            .when('/game/inimigo', {
+                templateUrl: '/angular/admin/game/inimigo',
+                controller: 'enemyGameController'
+            })
+            .when('/game/inimigo/novo', {
+                templateUrl: '/angular/admin/game/frmInimigo',
+                controller: 'enemyGameController'
+            })
+            .when('/game/inimigo/editar/:id', {
+                templateUrl: '/angular/admin/game/frmInimigo',
+                controller: 'enemyGameController'
             })
             //$locationProvider.html5Mode(true);
     }]);

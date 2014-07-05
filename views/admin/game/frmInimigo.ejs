@@ -1,0 +1,144 @@
+<div class="contentwrapper"><!--Content wrapper-->
+    <div class="heading">
+        <h3>Tileset</h3>
+        <ul class="breadcrumb">
+            <li>
+                <a href="#" class="tip" title="back to dashboard">
+                    <span class="icon16 icomoon-icon-screen-2"></span>
+                </a>
+                <span class="divider">
+                    <span class="icon16 icomoon-icon-arrow-right-2"></span>
+                </span>
+            </li>
+            <li class="active">Cadastrar Inimigos</li>
+        </ul>
+    </div><!-- End .heading-->
+
+    <!-- Build page from here: Usual with <div class="row-fluid"></div> -->
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="box">
+                <div class="title">
+                    <h4>
+                        <span>Cadastar Inimigos</span>
+                    </h4>
+                </div>
+                <div class="content">
+                    <form class="form-horizontal seperator" id="enemyForm" name="enemyForm" novalidate data-ng-init="get()">
+                        <div class="form-row row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <label class="form-label span3" for="name">Nome:</label>
+                                    <input class="span9" id="name" name="name" type="text" placeholder="Digite o nome do Mapa" data-ng-model="enemy.name" data-ng-minlength="4" required/>
+
+                                    <div ng-show="enemyForm.name.$dirty && enemyForm.name.$invalid" class="formValidacao">
+                                        <span class="erro" ng-show="enemyForm.name.$error.required">Digite o nome do Mapa.</span>
+                                        <span class="erro" ng-show="enemyForm.name.$error.minlength">Nome de 4 digitos ou mais!</span>
+                                    </div>
+                                </div>
+
+                                <!-- MAPA -->
+                                <div class="row-fluid">
+                                    <label class="form-label span3" for="atlas">Mapa:</label>
+                                    <div class="span9 controls">
+                                        <select name="mapa" data-ng-model="enemy.room" data-ng-options="resource.name for resource in rooms" required>
+                                            <option value="" selected>Selecione o Mapa</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- POSIÇÃO -->
+                                <div class="row-fluid">
+                                    <label class="form-label span3" for="position">Posição Inimigo</label>
+                                    <div class="input-append">
+                                        <input class="span4 text" id="positionx" name="positionx" size="30" type="number" placeholder="Posição X" data-ng-model="enemy.position.x" required>
+                                        <input class="span4 text" id="positiony" name="positiony" size="30" type="number" placeholder="Posição Y" data-ng-model="enemy.position.y" required>
+                                    </div>
+                                </div>
+
+                                <!-- ATRIBUTOS -->
+                                <div>
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="level">Level:</label>
+                                        <input id="level" max="99" min="0" data-ng-model="enemy.attributes.level" name="level" step="1" type="range" class="span8" required>
+                                        <output>{{enemy.attributes.level}}</output>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="str">Força:</label>
+                                        <input id="str" max="99" min="0" data-ng-model="enemy.attributes.str" name="str" step="1" type="range" class="span8" required>
+                                        <output>{{enemy.attributes.str}}</output>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="agi">Agilidade:</label>
+                                        <input id="agi" max="99" min="0" data-ng-model="enemy.attributes.agi" name="agi" step="1" type="range" class="span8" required>
+                                        <output>{{enemy.attributes.agi}}</output>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="vit">Vitalidade:</label>
+                                        <input id="vit" max="99" min="0" data-ng-model="enemy.attributes.vit" name="vit" step="1" type="range" class="span8" required>
+                                        <output>{{enemy.attributes.vit}}</output>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="int">Inteligencia:</label>
+                                        <input id="int" max="99" min="0" data-ng-model="enemy.attributes.int" name="int" step="1" type="range" class="span8" required>
+                                        <output>{{enemy.attributes.int}}</output>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="dex">Destreza:</label>
+                                        <input id="dex" max="99" min="0" data-ng-model="enemy.attributes.dex" name="dex" step="1" type="range" class="span8" required>
+                                        <output>{{enemy.attributes.dex}}</output>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="luk">Sorte:</label>
+                                        <input id="luk" max="99" min="0" data-ng-model="enemy.attributes.luk" name="luk" step="1" type="range" class="span8" required>
+                                        <output>{{enemy.attributes.luk}}</output>
+                                    </div>
+                                </div>
+
+                                <!-- ATLAS -->
+                                <div class="row-fluid">
+                                    <label class="form-label span3" for="atlas">Atlas:</label>
+                                    <div class="span9 controls">
+                                        <select name="atlas" data-ng-model="enemy.atlas" data-ng-options="resource.name for resource in buscaAtlas" required>
+                                            <option value="" selected>Selecione um Tiled</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- TILED -->
+                                <div class="row-fluid">
+                                    <label class="form-label span3" for="tiled">Tiled:</label>
+                                    <div class="span9 controls">
+                                        <select name="tiled" data-ng-model="enemy.tilesheet" data-ng-options="resource.name for resource in buscaSprite" required>
+                                            <option value="" selected>Selecione um Tiled</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row-fluid" data-ng-show="imgTile">
+                                    <label class="form-label span3" for="categoria">Imagem Tiled:</label>
+                                    <div class="span9 controls">
+                                        <img src="{{enemy.tilesheet.file}}">
+                                    </div>
+                                </div>
+
+                                <div class="form-row row-fluid">
+                                    <div class="span12">
+                                        <div class="row-fluid">
+                                            <div class="form-actions">
+                                                <div class="span3"></div>
+                                                <div class="span9 controls">
+                                                    <button type="submit" class="btn marginR10" data-ng-click="adicionar(enemy)" data-ng-disabled="enemyForm.$invalid">Salvar</button>
+                                                    <button data-ng-click="cancelar()" class="btn btn-danger" >Cancelar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div><!-- End .box -->
+        </div><!-- End .span12 -->
+    </div><!-- End .row-fluid -->
+</div><!-- End contentwrapper -->

@@ -28,7 +28,13 @@
                 this.camera.update();
 
                 // Adiciona Colisão Player Local.
-                this.game.physics.arcade.collide(this.localPlayer.player, this.map.layer[0]);
+                this.game.physics.arcade.collide(this.localPlayer.player, this.map.layer[0], function(obj1, obj2){
+                    if(obj2.index === 27 && obj2.x === 18 && obj2.y === 85){
+                        obj1.x = 570;
+                        obj1.y = 2680;
+                        console.log(obj1.x, obj1.y)
+                    }
+                });
 
                 if(this.remotePlayer.length > 0){
                     this.colisaoRemotePlayer();
@@ -148,14 +154,6 @@
             this.localPlayer.battleAnimations(tmpEnemy, true);
             tmpEnemy.battleAnimations(this.localPlayer, true);
         },
-
-//        remoteAtackAnima: function(obj1, obj2){
-//            tmpPlayer = this.playerById(obj1.id, this.remotePlayer);
-//            tmpEnemy  = this.playerById(obj2.id, this.enemies);
-//
-//            tmpPlayer.battleAnimations(tmpEnemy, false);
-//            tmpEnemy.battleAnimations(tmpPlayer, false);
-//        },
 
         _create: function(data){
 
@@ -310,11 +308,11 @@
             var tmpEnemy = this.playerById(data.id, this.enemies);
 
             if(!tmpEnemy){
-                util.log('Game:_changeEnemyHP: Enemy not found: ' + data.id);
+                console.log('Game:_changeEnemyHP: Enemy not found: ' + data.id);
                 return;
             };
 
-            tmpEnemy.setHp(data.hp)
+            tmpEnemy._changeHP(data.hp);
         },
 
         _deathEnemy: function(id){
