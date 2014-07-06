@@ -143,7 +143,7 @@ angular.module('tccApp.controllers', ['tccApp.services', 'angularFileUpload'])
         $scope.equips = false;
         $scope.imgTile = false;
 
-        var url = 'http://localhost:3000/api/upload/type/sprite';
+        var url = '/api/upload/type/sprite';
         ajaxService.getDataBy(url, function(data){
             if(data !== null){
                 $scope.tileds = data;
@@ -368,7 +368,7 @@ angular.module('tccApp.controllers', ['tccApp.services', 'angularFileUpload'])
             for (var i = 0; i < $files.length; i++) {
                 var file = $files[i];
                 $scope.upload = $upload.upload({
-                    url: 'http://localhost:3000/api/uploadFile', //upload.php script, node.js route, or servlet url
+                    url: '/api/uploadFile', //upload.php script, node.js route, or servlet url
                     // method: 'POST' or 'PUT',
                     // headers: {'header-key': 'header-value'},
                     // withCredentials: true,

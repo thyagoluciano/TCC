@@ -1,51 +1,51 @@
 angular.module('tccApp.services', ['ngResource'])
     .factory('CategoriaFactory', function($resource){
         return $resource(
-            'http://localhost:3000/api/categoria/:id', {
+            '/api/categoria/:id', {
                 id: '@id'
             },
             {
                 update: {
                     method: 'PUT',
-                    url: 'http://localhost:3000/api/categoria/:id'
+                    url: '/api/categoria/:id'
                 },
                 findById: {
                     method: 'GET',
-                    url: 'http://localhost:3000/api/categoria/:id'
+                    url: '/api/categoria/:id'
                 }
             }
         );
     })
     .factory('ProdutoFactory', function($resource){
         return $resource(
-            'http://localhost:3000/api/produto/:id', {
+            '/api/produto/:id', {
                 id: '@id'
             },
             {
                 update: {
                     method: 'PUT',
-                    url: 'http://localhost:3000/api/produto/:id'
+                    url: '/api/produto/:id'
                 },
                 findById: {
                     method: 'GET',
-                    url: 'http://localhost:3000/api/produto/:id'
+                    url: '/api/produto/:id'
                 }
             }
         );
     })
     .factory('UploadFactory', function($resource){
         return $resource(
-            'http://localhost:3000/api/upload/:id', {
+            '/api/upload/:id', {
                 id: '@id'
             },
             {
                 findById: {
                     method: 'GET',
-                    url: 'http://localhost:3000/api/upload/:id'
+                    url: '/api/upload/:id'
                 },
                 findByType: {
                     method: 'GET',
-                    url: 'http://localhost:3000/api/upload/type/:id'
+                    url: '/api/upload/type/:id'
                 }
             }
 
@@ -53,34 +53,34 @@ angular.module('tccApp.services', ['ngResource'])
     })
     .factory('MapFactory', function($resource){
         return $resource(
-            'http://localhost:3000/api/map/:id', {
+            '/api/map/:id', {
                 id: '@id'
             },
             {
                 update: {
                     method: 'PUT',
-                    url: 'http://localhost:3000/api/map/:id'
+                    url: '/api/map/:id'
                 },
                 findById: {
                     method: 'GET',
-                    url: 'http://localhost:3000/api/map/:id'
+                    url: '/api/map/:id'
                 }
             }
         );
     })
     .factory('EnemyFactory', function($resource){
         return $resource(
-            'http://localhost:3000/api/enemy/:id', {
+            '/api/enemy/:id', {
                 id: '@id'
             },
             {
                 update: {
                     method: 'PUT',
-                    url: 'http://localhost:3000/api/enemy/:id'
+                    url: '/api/enemy/:id'
                 },
                 findById: {
                     method: 'GET',
-                    url: 'http://localhost:3000/api/enemy/:id'
+                    url: '/api/enemy/:id'
                 }
             }
         );
