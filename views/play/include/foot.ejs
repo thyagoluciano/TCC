@@ -28,9 +28,6 @@
 <script type="text/javascript" src="/js/play/class/Camera.js"></script>
 
 <script type="text/javascript">
-    function testeSocket(){
-        socket.emit('teste', { msg: 'Enviando um socket de fora do game'});
-    }
 
     window.onload = function(){
         var game = new Phaser.Game(800, 600, Phaser.AUTO, 'gameContainer');
@@ -43,6 +40,10 @@
         // Now start the Boot state
         game.state.start('Boot');
     };
+
+    function testeSocket(){
+        GameCtrl.socket.emit('teste', { msg: 'Enviando um socket de fora do game'});
+    }
 </script>
 
 <!-- jQuery -->

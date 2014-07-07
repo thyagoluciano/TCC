@@ -2,6 +2,6 @@ angular.module('tccApp', ['ngRoute', 'ngResource', 'tccApp.controllers', 'ui.boo
     .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){
         $routeProvider
             .when('/', {
-                templateUrl: 'angular/play/menu'
+                controller: 'playCtrl'
             })
     }]);

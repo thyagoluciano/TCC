@@ -1,13 +1,17 @@
 angular.module('tccApp.controllers', ['tccApp.services'])
     .controller('loginCtrl', ['$scope', 'ajaxService', '$location', function($scope, ajaxService, $location){
 
-        $scope.nome = 'Thyago Luciano';
+        $scope.logar = function(usuario){
 
-        $scope.login = function(usuario){
-            var url = '/api/users/'+usuario.email+'/'+usuario.password;
+            var url = '/api/users/'+usuario.email+'/'+usuario.senha;
             ajaxService.getDataBy(url, function(data){
-                if(data !== null){
-                   location.href="/jogo";
+                if(data !== 'null'){
+                    console.log(data);
+                    $('#logarModal').modal('hide');
+                    location.href="/jogo";
+                }else{
+                    $scope.erro = 'Usuário ou senha inválido'
+                    console.log($scope.erro);
                 }
             });
         };

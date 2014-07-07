@@ -2,6 +2,7 @@ angular.module('tccApp', ['ngRoute', 'ngResource', 'tccApp.controllers'])
 
 .config(['$routeProvider', '$locationProvider', function($routeProvider){
         $routeProvider
+
             .when('/', {
                 templateUrl: '/angular/admin/dashboard'
             })

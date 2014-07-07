@@ -1,49 +1,8 @@
-<!DOCTYPE html>
-<html lang="pt-br" data-ng-app="tccApp">
+<% include include/header %>
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title><%= title %></title>
-    <meta name="author" content="ThyagoLuciano" />
-    <meta name="description" content="Painel administrativo do Projeto MMORPG" />
-    <meta name="keywords" content="thyago luciano, tcc, mmorpg" />
-    <meta name="application-name" content="Painel Administrativo Projeto TCC FPU" />
+<div class="container-fluid">
 
-    <!-- Mobile Specific Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!-- Le styles -->
-    <link href="/adm/css/bootstrap/bootstrap.css" rel="stylesheet" />
-    <link href="/adm/css/bootstrap/bootstrap-responsive.css" rel="stylesheet" />
-    <link href="/adm/css/supr-theme/jquery.ui.supr.css" rel="stylesheet" type="text/css"/>
-    <link href="/adm/css/icons.css" rel="stylesheet" type="text/css" />
-    <link href="/adm/plugins/forms/uniform/uniform.default.css" type="text/css" rel="stylesheet" />
-
-    <!-- Main stylesheets -->
-    <link href="/adm/css/main.css" rel="stylesheet" type="text/css" />
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-    <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="/adm/images/thyagoluciano.png" />
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/adm/images/apple-touch-icon-144-precomposed.png" />
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/adm/images/apple-touch-icon-114-precomposed.png" />
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/adm/images/apple-touch-icon-72-precomposed.png" />
-    <link rel="apple-touch-icon-precomposed" href="/adm/images/apple-touch-icon-57-precomposed.png" />
-
-    <style type="text/css">
-
-    </style>
-
-</head>
-
-<body class="loginPage">
-
-<div class="container-fluid" data-ng-controller="adminCtrl">
+    {{nome}}
     <div class="container">
         <div style="width: 300px; margin: 0 auto">
             <img src="/adm/images/thyagolucianologo.png" alt="Thyago Luciano"/>
@@ -106,30 +65,4 @@
 
 </div><!-- End .container-fluid -->
 
-<!-- Le javascript
-================================================== -->
-<!-- AngularJS -->
-<script type="text/javascript" src="/lib/angular/angular.min.js"></script>
-<script type="text/javascript" src="/lib/angular-cookies/angular-cookies.min.js"></script>
-<script type="text/javascript" src="/lib/angular-resource/angular-resource.min.js"></script>
-<script type="text/javascript" src="/lib/angular-route/angular-route.min.js"></script>
-
-<!-- Angular UI -->
-<script type="text/javascript" src="/lib/angular-bootstrap/ui-bootstrap.js"></script>
-<script type="text/javascript" src="/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-<script type="text/javascript" src="/lib/angular-ui-utils/ui-utils.min.js"></script>
-
-<!-- Application -->
-<script type="text/javascript" src="/js/admin/app.js"></script>
-<script type="text/javascript" src="/js/services.js"></script>
-<script type="text/javascript" src="/js/admin/adminControllers.js"></script>
-
-<script  type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script type="text/javascript" src="/adm/js/bootstrap/bootstrap.js"></script>
-<script type="text/javascript" src="/adm/plugins/misc/touch-punch/jquery.ui.touch-punch.min.js"></script>
-<script type="text/javascript" src="/adm/plugins/misc/ios-fix/ios-orientationchange-fix.js"></script>
-<script type="text/javascript" src="/adm/plugins/forms/validate/jquery.validate.min.js"></script>
-<script type="text/javascript" src="/adm/plugins/forms/uniform/jquery.uniform.min.js"></script>
-
-</body>
-</html>
+<% include include/foot %>

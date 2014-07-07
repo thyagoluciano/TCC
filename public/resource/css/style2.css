@@ -150,7 +150,8 @@ header {
 	height: 95px
 }
 .posts:hover {
-	background: #02c3b7;color>#fff
+	background: #02c3b7;
+    color:#fff
 }
 .posts .avatar img {
 	width: 40px;
@@ -163,7 +164,8 @@ header {
 
 .posts .conteudo {
 	padding-top: 3px;
-	font-size: 12px
+	font-size: 12px;
+	background:#000;
 }
 
 .open {
@@ -185,9 +187,6 @@ header {
 	font-size:20px;
 	padding: 30px
 }
-#chat-post::-webkit-scrollbar {width: 15px; height: 15px<!-- largura da barra de rolagem -->}
-#chat-post::-webkit-scrollbar-track-piece {background: #404040; <!-- Cor do fundo da barra de rolagem -->}
-#chat-post::-webkit-scrollbar-thumb:vertical {background: #02C3B7; <!-- Cor da barra de rolagem -->}
 
 
 /*
@@ -220,7 +219,15 @@ header {
 /*
 	Footer
 */
-#footer{padding: 2px;background: #f5f5f5}
+#footer{
+    padding: 2px;
+    background: #f5f5f5;
+    padding: 2px;
+    background: none repeat scroll 0% 0% #F5F5F5;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+}
 #footer ul{text-align: center;margin-top: 25px;}
 #footer li {
 	display: inline-block
@@ -243,4 +250,20 @@ header {
 	color: #404040 !important
 }
 
-@media (max-width: 768px){ #redes-sociais{display: none} #menu li a {font-size: 10px;} }
+
+
+@media (max-width: 768px){
+	#redes-sociais{display: none}
+}
+
+
+.formValidacao{
+    color: red;
+    font: 8px;
+    margin-left: 115px;
+}
+/*
+index3
+*/
+.btn-comprar{background: #ccc;}
+

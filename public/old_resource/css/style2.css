@@ -1,0 +1,246 @@
+body{font-family: Montserrat, sans-serif;}
+h1,h2,h3,h4,h5,h6{text-transform: uppercase;}
+.menulist {
+	padding: 7px;
+	margin: 14px;
+	display: inline-block;
+	vertical-align: middle;
+	float: left;
+	cursor: pointer;
+	font-size: 30px;
+	color: #112111
+}
+.menulist:hover {
+	color: #fff;
+}
+#menu {
+	background: #000;
+	height: 100%;
+	width: 300px;
+	position: fixed;
+	margin-left: -300px;
+}
+
+.fechar:hover:before {
+	color: #fff;
+}
+
+#menu ul {
+	list-style: none;
+	padding: 0px;
+	
+}
+#menu li {
+	margin: 1px auto;
+	background:  #090909;
+	padding: 20px 0;
+}
+#menu li:hover {
+	cursor: pointer;
+	background: #060606
+}
+#menu li a {
+	font-size: 14px;
+	display: inline-block;
+	color: #fff;
+}
+#menu li a:hover {
+	text-decoration: none
+}
+header {
+	width: 100%;
+	background-color: rgba(255, 255, 255, 0.4);
+	height: 72px;
+	position: fixed;
+	z-index: 100
+}
+.logo {
+	height: 71px;
+	float: left;
+	padding: 0 5px 1px;
+	background: #112111;
+
+}
+#redes-sociais {
+	list-style: none;
+	float: right;
+	margin-top: 15px;
+}
+#redes-sociais li {
+	display: inline-block
+}
+#redes-sociais li button {
+	font-size: 12px;
+	background: #000;
+	border: 0;
+	border-radius: 20px;
+	margin-top: -15px;
+	text-shadow: none;
+	padding:10px 15px;
+	color:#fff
+}
+#redes-sociais li button:hover {
+	background: #404040;
+	text-shadow: none;
+	color: #fff !important
+}
+#redes-sociais li a {
+	font-size: 35px;
+	text-decoration: none;
+	color: #000 !important;
+	margin-top: 10px;
+}
+#redes-sociais li a:hover:before {
+	text-decoration: none;
+	color: #404040 !important
+}
+
+/*
+ * TITULO
+ */
+.box-title {
+	background: #02c3b7 !important;
+	padding: 22px 0;
+	font-size: 20px;
+	text-transform: uppercase;
+}
+#menu .box-title {
+	padding: 20px 0!important;
+	text-align: center
+}
+.left {
+	float: left;
+	margin: 0 20px
+}
+.right {
+	float: right;
+	margin-right: 20px
+}
+/*
+ * POST
+ */
+#chat-titulo{position: fixed;}
+#chat-post{position:absolute;overflow: auto;height: 100%;top: 150px;margin-bottom:70px}
+
+.post {
+	background: #f5f5f5;
+	padding: 2px 10px 5px ;
+	height: 80px;
+	width:100%;
+
+}
+.post .campo-post {
+	width: 245px;
+	float: left;
+	height: 50px
+}
+.post .button-post {
+	float: left !important;
+	background: #02c3b7;
+	border-radius: 0;
+	height: 50px;
+	text-shadow: none
+}
+.post .button-post:hover {
+	background: #02c3b7
+}
+.posts {
+	padding: 15px;
+	width: auto;
+	height: 95px
+}
+.posts:hover {
+	background: #02c3b7;color>#fff
+}
+.posts .avatar img {
+	width: 40px;
+	height: 40px;
+	background: #000;
+	border-radius: 35px;
+	float: left;
+	margin: 0 10px 10px 0;
+}
+
+.posts .conteudo {
+	padding-top: 3px;
+	font-size: 12px
+}
+
+.open {
+	width: 350px;
+	height: 100%;
+}
+
+.box {
+	margin-top: 32%;
+}
+
+.ico {
+	display: block;
+	cursor: pointer
+}
+.ico:hover:before{color:#fff}
+.ico2 {
+	cursor: pointer;
+	font-size:20px;
+	padding: 30px
+}
+#chat-post::-webkit-scrollbar {width: 15px; height: 15px<!-- largura da barra de rolagem -->}
+#chat-post::-webkit-scrollbar-track-piece {background: #404040; <!-- Cor do fundo da barra de rolagem -->}
+#chat-post::-webkit-scrollbar-thumb:vertical {background: #02C3B7; <!-- Cor da barra de rolagem -->}
+
+
+/*
+	Slider
+*/
+#slider{
+	width: 100%;
+	height: 550px;
+	background: url(../img/bg2.jpg) no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+
+
+/*
+	Section
+*/
+#conteudo{background: #fff}
+#conteudo h3{margin-left: 10px;}
+
+.games{margin-bottom: 10px;}
+.games a:hover{text-transform: none !important}
+.games h4{text-align: center;}
+.games p{text-align: center;color: #ccc}
+
+
+/*
+	Footer
+*/
+#footer{padding: 2px;background: #f5f5f5}
+#footer ul{text-align: center;margin-top: 25px;}
+#footer li {
+	display: inline-block
+}
+
+#footer li button:hover {
+	background: #fff;
+	text-shadow: none;
+	color: #000 !important
+}
+#footer li a {
+	font-size: 16px;
+	text-decoration: none;
+	color: #000 !important;
+	text-align: center;
+}
+.icon{font-size: 25px!important}
+#footer li a:hover:before {
+	text-decoration: none;
+	color: #404040 !important
+}
+
+@media (max-width: 768px){ #redes-sociais{display: none} #menu li a {font-size: 10px;} }

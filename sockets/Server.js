@@ -12,6 +12,13 @@ Server.prototype = {
                 });
         });
 
+        client.on('chat:enviaMensagem', function(data){
+
+            console.log(data.room);
+
+            this.broadcast.to(data.room).emit('chat:recebeMensagem', { name: data.name, msg: data.msg });
+//            this.emit('chat:recebeMensagem', { name: data.name, msg: data.msg });
+        });
     }
 }
 

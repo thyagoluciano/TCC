@@ -38,6 +38,15 @@
                                         <span class="erro" ng-show="produtoForm.name.$error.minlength">Nome de 4 digitos ou mais!</span>
                                     </div>
                                 </div>
+                                <!-- description -->
+                                <div class="row-fluid">
+                                    <label class="form-label span3" for="description">Descrição do Produto:</label>
+                                    <input class="span9" id="description" name="description" type="text" placeholder="Digite a descrição do Produto" data-ng-model="produto.description" required/>
+                                    <!--<textarea class="span9" id="description" name="description" type="text" placeholder="Digite a descrição do Produto" data-ng-model="produto.description" required></textarea>-->
+                                    <div ng-show="produtoForm.description.$dirty && produtoForm.description.$invalid" class="formValidacao">
+                                        <span class="erro" ng-show="produtoForm.description.$error.required">Digite uma descrição para o Produto.</span>
+                                    </div>
+                                </div>
                                 <!-- CATEGORIA -->
                                 <div class="row-fluid">
                                     <label class="form-label span3" for="categoria">Categoria:</label>

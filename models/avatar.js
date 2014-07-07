@@ -146,16 +146,21 @@ exports.create = function(req, res){
         data.attributes.level = 1;
 
     var dados = {
+        user:       data.user,
         name:       data.name,
-        gender:     data.gender,
-        attributes: data.attributes,
+        room:       'praia',
+        gender:     'M',
+        frame:      0,
         sprite: 1,
+        direction: 'false',
+        attributes: data.attributes,
+        equipment: {},
+        storage: {},
         position: {
-            px: 250,
-            py: 80
-        },
-        user:       data.user
-    };
+            x: 1319,
+            y: 287
+        }
+    }
 
     var avatar = new Avatar(dados);
 

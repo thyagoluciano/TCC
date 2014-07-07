@@ -2,9 +2,17 @@ angular.module('tccApp.controllers', ['tccApp.services'])
     .controller('jogoCtrl', ['$scope', 'ajaxService', '$location', '$modal', function($scope, ajaxService, $location, $modal){
 
         $scope.avatar = {
-            'name': '',
-            'attributes': {'for': 0, 'agi': 0, 'vit': 0, 'int': 0, 'des': 0, 'sor': 0, 'total': 24},
-            'user': ''
+            name: '',
+            user: '',
+            attributes: {
+                str: 0,
+                agi: 0,
+                vit: 0,
+                int: 0,
+                dex: 0,
+                luk: 0,
+                total: 24
+            }
         };
 
         $scope.jogar = function(_id){
@@ -65,13 +73,13 @@ angular.module('tccApp.controllers', ['tccApp.services'])
         var ModalInstanceCtrl = function ($scope, $modalInstance, avatar) {
 
             $scope.avatar = avatar;
-            $scope.total = avatar.attributes.total;
+            $scope.total = $scope.avatar.attributes.total;
             $scope.disabled = true;
             $scope.msg = 'Por Favor distribua';
 
 
-            $scope.$watch('avatar.attributes.for', function(){
-                $scope.total = $scope.avatar.attributes.total - $scope.avatar.attributes.for;
+            $scope.$watch('avatar.attributes.str', function(){
+                $scope.total = $scope.avatar.attributes.total - $scope.avatar.attributes.str;
             });
 
             $scope.$watch('avatar.attributes.agi', function(){
@@ -86,16 +94,16 @@ angular.module('tccApp.controllers', ['tccApp.services'])
                 $scope.total = $scope.avatar.attributes.total - $scope.avatar.attributes.int;
             });
 
-            $scope.$watch('avatar.attributes.des', function(){
-                $scope.total = $scope.avatar.attributes.total - $scope.avatar.attributes.des;
+            $scope.$watch('avatar.attributes.dex', function(){
+                $scope.total = $scope.avatar.attributes.total - $scope.avatar.attributes.dex;
             });
 
-            $scope.$watch('avatar.attributes.sor', function(){
-                $scope.total = $scope.avatar.attributes.total - $scope.avatar.attributes.sor;
+            $scope.$watch('avatar.attributes.luk', function(){
+                $scope.total = $scope.avatar.attributes.total - $scope.avatar.attributes.luk;
             });
 
             $scope.$watch('total', function(){
-                $scope.total = ($scope.avatar.attributes.total - $scope.avatar.attributes.for - $scope.avatar.attributes.agi - $scope.avatar.attributes.vit - $scope.avatar.attributes.int - $scope.avatar.attributes.des - $scope.avatar.attributes.sor);
+                $scope.total = ($scope.avatar.attributes.total - $scope.avatar.attributes.str - $scope.avatar.attributes.agi - $scope.avatar.attributes.vit - $scope.avatar.attributes.int - $scope.avatar.attributes.dex - $scope.avatar.attributes.luk);
 
                 if($scope.total == 0){
 

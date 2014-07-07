@@ -4,10 +4,12 @@ angular.module('tccApp.controllers', ['tccApp.services', 'angularFileUpload'])
         // Logar o Usuário no Painel Administrativo
         $scope.logar = function(usuario){
 
+
            if(usuario){
                var url = '/api/users/'+usuario.username+'/'+usuario.password;
 
                ajaxService.getDataBy(url, function(data){
+
                    if(data !== null){
 
                        if(data.perfil.perfil === 'Administrador'){
@@ -226,7 +228,8 @@ angular.module('tccApp.controllers', ['tccApp.services', 'angularFileUpload'])
                                tiled: data.tiled,
                                tiledPosition: data.tiledPosition,
                                price: data.price,
-                               equipAttr: data.equipAttr
+                               equipAttr: data.equipAttr,
+                               description: data.description
                            }
                         }
                     },

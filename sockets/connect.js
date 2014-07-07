@@ -8,11 +8,10 @@ module.exports = function(io){
 
     var maps = new Maps(io);
         maps.create();
-
     var players = [];
 
     // temporarias
-    var tmpUsers = ['thyago.luciano', 'karina.felix'];
+    var tmpUsers = ['thyago.001', 'thyago.luciano', 'karina.felix'];
     var ctrl = 0;
 
     // Array de Sockets para serpar os eventos
@@ -24,11 +23,20 @@ module.exports = function(io){
     sockets.on('connection', function( client ){
         console.log('Novo Cliente Connectado: ' + client.id);
 
-        initVar(client.id);// Inicia as Variaveis do game
-
         // EventHandlers
         listSockets['Server'].setEventHandlers(client);
 
+
+        var session = client.handshake.session;
+
+        if(session.usuario.perfil.perfil === 'Administrador'){
+            initVar(client.id, session.usuario.name, false);
+        }else{
+            initVar(client.id, session.usuario.avatar.name, true);// Inicia as Variaveis do game
+            client.join(session.usuario.avatar.room);
+            // Envia o dados do usuario para iniciar o chat
+            client.emit('avatar:init', {name: session.usuario.avatar.name, room: session.usuario.avatar.room} );
+        }
 
         // Disconnect
         client.on("disconnect", onClientDisconnect);
@@ -59,19 +67,22 @@ module.exports = function(io){
     });
 
     // Metodo que inicializa as variaveis do Game
-    function initVar(socketId){
-        // Instancia a Classe Player
-        var player = new Player(io, tmpUsers[ctrl]);
-            player.create(socketId); // Cria o Player
+    function initVar(socketId, avatarName, cliente){
 
-            players.push(player);
+        if(cliente){
+            // Instancia a Classe Player
+            var player = new Player(io, avatarName );
+                player.create(socketId); // Cria o Player
+
+                players.push(player);
+        }
 
         // Controle temporario
-        if(ctrl == 1){
-            ctrl = 0;
-        }else{
-            ctrl++;
-        }
+//        if(ctrl == 1){
+//            ctrl = 0;
+//        }else{
+//            ctrl++;
+//        }
     }
 
     // Metodo que disconecta o jogador, removendo do array players e das salas de jogos
@@ -97,7 +108,7 @@ module.exports = function(io){
         var tmpPlayer = playerById(this.id, players);
 
         // Adiciona o usuario na sala
-        this.join(tmpPlayer.getRoom());
+//        this.join(tmpPlayer.getRoom());
 
         // Envia os dados do jogador e do mapa para o cliente
         this.emit('game:createGame', {id: this.id, user: tmpPlayer.getPlayer(), maps: maps.getRoom(tmpPlayer.getRoom()).getProperties()});

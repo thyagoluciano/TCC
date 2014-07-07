@@ -29,7 +29,8 @@ var ItensSchema  = new Schema({
         type: {},
         atlas: {},
         tilesheet: {}
-    }
+    },
+    description: {type: String}
 });
 
 var Itens          = mongoose.model("Itens", ItensSchema);
@@ -99,10 +100,10 @@ exports.create = function(req, res){
             type: data.typeEquip,
             atlas: data.atlas,
             tilesheet: data.tilesheet
-        }
+        },
+        description: data.description
     };
 
-    console.log(dados);
 
     var itens = new Itens(dados);
 
@@ -130,7 +131,8 @@ exports.update = function(req, res){
             type: data.typeEquip,
             atlas: data.atlas,
             tilesheet: data.tilesheet
-        }
+        },
+        description: data.description
     };
 
     Itens.update({_id: id}, dados, function(err, data){
