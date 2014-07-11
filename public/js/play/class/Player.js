@@ -16,6 +16,7 @@
         this.style = { font: "12px Arial", fill: "#000000", align: "left"};
         this.hp;
         this.name;
+        this.id;
 
         // enemy
         this.enemy;
@@ -29,6 +30,7 @@
             // Hero
             this.player = this.game.add.sprite(this.user.position.x, this.user.position.y, 'char');
             this.player.id = this.user.socketId;
+            this.id = this.user.id;
             this.player.name = this.user.name;
             this.user.hpTotal = this.user.attributes.hp;
             // Adiciona o over, para auxiliar na batalha.
@@ -67,19 +69,33 @@
 
             // Cria o Cursos para controlar os movimentos do Player
             this.cursors = this.game.input.keyboard.createCursorKeys();
+
+//            console.log(this.user);
         },
 
         addEquipPlayer: function(){
             // Adiciona Equipamentos
+
             if(this.user.equipment){
                 for(var k in this.user.equipment){
-//                    console.log(this.user.equipment[k]);
                     var tmpEquip = new EquipFactory(this.game);
-                    tmpEquip.init(this.user.equipment[k]);
+                        tmpEquip.init(this.user.equipment[k]);
 
                     this.equips.push(tmpEquip);
                     this.player.addChild(tmpEquip.equip.equip);
                 }
+            }
+        },
+
+        trocaEquipPlayer: function(){
+            // Adiciona Equipamentos
+            if(this.user.equipment){
+                for(var i = 0; i < this.equips.length; i++){
+//                    this.equips[i].kill();
+                    this.equips[i].equip.equip.kill();
+                }
+
+                this.addEquipPlayer();
             }
         },
 
@@ -247,7 +263,7 @@
 
             if(this.user.attributes.hp <= 0){
                 this.death(true);
-                this.enemy.stop(true);
+//                this.enemy.stop(true);
             }
         },
 

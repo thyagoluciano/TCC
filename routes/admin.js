@@ -7,7 +7,7 @@ module.exports = function(app){
 
 
     app.get('/admin', admin.index);
-    app.get('/admin/manager', admin.manager);
+    app.get('/admin/manager', autenticar, admin.manager);
 
     app.get('/angular/:diretorio/:name', admin.angular);
     app.get('/angular/:diretorio/:diretorio1/:name', admin.angular1);

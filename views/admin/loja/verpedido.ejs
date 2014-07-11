@@ -1,0 +1,127 @@
+<div class="contentwrapper"><!--Content wrapper-->
+
+    <div class="heading">
+
+        <h3>Detalhes do Pedido</h3>
+
+        <ul class="breadcrumb">
+            <li>Você está aqui:</li>
+            <li>
+                <a href="#" class="tip" title="back to dashboard">
+                    <span class="icon16 icomoon-icon-screen-2"></span>
+                </a>
+                        <span class="divider">
+                            <span class="icon16 icomoon-icon-arrow-right-2"></span>
+                        </span>
+            </li>
+            <li class="active">Detalhes do Pedido</li>
+        </ul>
+
+    </div><!-- End .heading-->
+
+    <!-- Build page from here: -->
+    <div class="row-fluid" data-ng-init="get()">
+
+        <div class="span12">
+
+            <div class="box gradient invoice">
+
+                <div class="title clearfix">
+
+                    <h4 class="left">
+                        <span>MMORPG - TCC</span><br />
+                        <button class="btn btn-danger" href="#" data-ng-click="pagar(pedido)" data-ng-show="showPagar">
+                            <span class="icon16 icomoon-icon-cancel-2 white"></span>
+                            Pagar
+                        </button>
+                    </h4>
+                    <div class="print" style="width: 60px; height: 40px">
+                        <!--<a href="#" class="tip" title="Print invoice"><span class="icon24 icomoon-icon-printer-2"></span></a>-->
+                    </div>
+                    <div class="invoice-info">
+                        <span class="number">Pedido <strong class="red">#{{pedido._id}}</strong></span>
+                        <span class="data gray">{{pedido.dataPedido}}</span>
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+                <div class="content">
+                    <!--<div class="you">-->
+                        <!--<ul class="unstyled">-->
+                            <!--<li><span class="icon16 icomoon-icon-arrow-right-2"></span>Your address</li>-->
+                            <!--<li><span class="icon16 icomoon-icon-arrow-right-2"></span>Town</li>-->
+                            <!--<li><span class="icon16 icomoon-icon-arrow-right-2"></span>Region/State</li>-->
+                            <!--<li><span class="icon16 icomoon-icon-arrow-right-2"></span>Zip/Postal Code</li>-->
+                            <!--<li><span class="icon16 icomoon-icon-arrow-right-2"></span>Phone: <strong class="red">+040 / 222-222-222</strong></li>-->
+                            <!--<li><span class="icon16 icomoon-icon-arrow-right-2"></span>Fax: <strong class="red">+040 / 222-222-222</strong></li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                    <!--<div class="client">-->
+                        <!--<ul class="unstyled">-->
+                            <!--<li><h3>Client company name</h3></li>-->
+                            <!--<li><span class="icon16 icomoon-icon-arrow-right-2"></span>Client address</li>-->
+                            <!--<li><span class="icon16 icomoon-icon-arrow-right-2"></span>Town</li>-->
+                            <!--<li><span class="icon16 icomoon-icon-arrow-right-2"></span>Region/State</li>-->
+                            <!--<li><span class="icon16 icomoon-icon-arrow-right-2"></span>Zip/Postal Code</li>-->
+                            <!--<li><span class="icon16 icomoon-icon-arrow-right-2"></span>Phone: <strong class="red">+040 / 444-244-244</strong></li>-->
+                            <!--<li><span class="icon16 icomoon-icon-arrow-right-2"></span>Fax: <strong class="red">+040 / 444-244-244</strong></li>-->
+
+                        <!--</ul>-->
+                    <!--</div>-->
+                    <div class="clearfix"></div>
+
+                    <table class="responsive table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Produto</th>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                            <th>Quantidade</th>
+                            <th>Total</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="row in pedido.itens">
+                            <td>{{$index}}</td>
+                            <td>{{row.name}}</td>
+                            <td>{{row.description}}</td>
+                            <td>R${{row.price.real}}</td>
+                            <td>{{row.qtd}}</td>
+                            <td>R${{row.total}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="payment">
+                        <ul class="unstyled">
+                            <li><h3>Meotodo de Pagamento: <span class="red">Pag Seguro</span></h3></li>
+                            <li><span class="icon16 icomoon-icon-arrow-right-2"></span>Nome: <strong class="red">{{pedido.user.name}}</strong></li>
+                            <li><span class="icon16 icomoon-icon-arrow-right-2"></span>Email: <strong class="red">{{pedido.user.email}}</strong></li>
+                            <li><span class="icon16 icomoon-icon-arrow-right-2"></span>Avatar: <strong class="red">{{pedido.user.avatar.name}}</strong></li>
+                            <li><span class="icon16 icomoon-icon-arrow-right-2"></span>Código: <strong class="red">{{pedido.pagseguro.checkout.code}}</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="total">
+                        <h4>Total Compra:<span class="red"> R${{total}}</span></h4>
+                    </div>
+
+
+                    <div class="clearfix"></div>
+
+                    <div class="invoice-footer">
+                        <span class="icon16 icomoon-icon-arrow-right-2"></span>
+                        Status: <strong class="red">{{pedido.status}}</strong>
+                    </div>
+
+                </div>
+
+            </div><!-- End .box -->
+
+        </div>
+
+    </div><!-- End .row-fluid -->
+
+
+</div><!-- End contentwrapper -->

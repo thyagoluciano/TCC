@@ -15,6 +15,9 @@ module.exports = function(app){
         getByUser: function(req, res){
             AvatarModel.getByUser(req, res);
         },
+        getByName: function(req, res){
+            AvatarModel.getByName(req, res);
+        },
         create: function(req, res){
             AvatarModel.create(req, res);
         },

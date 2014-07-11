@@ -307,6 +307,149 @@ angular.module('tccApp.controllers', ['tccApp.services', 'angularFileUpload'])
             $location.path('/loja/produto');
         }
     }])
+    .controller('adminPedidosController', ['$scope', 'PedidoFactory', 'AvatarFactory', '$routeParams', '$location', function($scope, PedidoFactory, AvatarFactory, $routeParams, $location){
+
+        $scope.showPagar = true;
+
+        $scope.load = function(){
+            PedidoFactory.query(
+                {},
+                function(data, status, headers, config){
+                    $scope.pedidos = data;
+                },
+                function(data , status, headers, config){
+                    alert('Ocorreu um erro: ' + data);
+                }
+            );
+        };
+
+        $scope.get = function(){
+
+            var _id = $routeParams.id
+
+            if(_id){
+                PedidoFactory.findById(
+                    {id: _id},
+                    function(data, status, headers, config){
+                        if(data !== null){
+                            var dt = new Date(Date.parse(data.pagseguro.checkout.date[0]));
+                            data.dataPedido = dt.toLocaleDateString();
+                            data.itens = $scope.calculaCompra(data.itens);
+
+                            $scope.itens = data.itens;
+                            $scope.pedido = data;
+
+                            if(data.status === "Finalizado"){
+                                $scope.showPagar = false;
+                            }
+
+                        }
+                    },
+                    function(data , status, headers, config){
+                        alert('Ocorreu um erro: ' + data);
+                    }
+                );
+            }
+        }
+
+        $scope.pagar = function(pedido){
+            // Atualizar o pedido para finalizado.
+
+            if(pedido){
+                pedido.status = 'Finalizado'
+                if(pedido._id){
+                    var _id = pedido._id;
+
+                    delete pedido._id;
+
+                    PedidoFactory.update(
+                        {id: _id},
+                        pedido,
+                        function(data, status, headers, config){
+                            alert('Produto atualizado com sucesso!');
+                            $scope.showPagar = false;
+                            $location.path('/loja/pedidos/visualizar/'+_id);
+                        },
+                        function(data , status, headers, config){
+                            console.log('Erro');
+                            console.log(data);
+                        }
+                    );
+
+                }else{
+                    PedidoFactory.save(
+                        {},
+                        pedido,
+                        function(data, status, headers, config){
+                            alert('Produto Cadastrada com Sucesso!');
+                            $location.path('/loja/pedidos');
+                        },
+                        function(data , status, headers, config){
+                            console.log('Ocorreu um erro: ', data);
+                        }
+                    );
+                }
+            }
+            // Pegar os itens do pedido e enviar para o storage do jogador
+            AvatarFactory.findById(
+                {id: pedido.user.avatar._id},
+                function(data, status, headers, config){
+                    if(data !== null){
+                        if(data.storage){
+                            for(var i = 0; i < pedido.itens.length; i++){
+                                data.storage.push(pedido.itens[i]);
+                            }
+                        }else{
+                            data.storage = pedido.itens;
+                        }
+                    }
+
+                    var avatarId = data._id;
+
+                    delete data._id;
+
+                    AvatarFactory.update(
+                        {id: avatarId},
+                        data,
+                        function(data, status, headers, config){
+                            console.log(data);
+                        },
+                        function(data , status, headers, config){
+                            console.log('Erro');
+                            console.log(data);
+                        }
+                    )
+                },
+                function(data , status, headers, config){
+                    alert('Ocorreu um erro: ' + data);
+                }
+            );
+        }
+
+        $scope.calculaCompra = function(itens){
+
+            var newItens = [];
+
+            $scope.total = 0;
+
+            angular.forEach(itens, function(value, key){
+                var valor = value.price.real.replace(/,/gi, ".");
+                    valor = parseFloat(valor);
+
+                value.price.real = valor.toFixed(2);
+                var total = valor * value.qtd;
+                value.total = total.toFixed(2);
+
+                $scope.total += total;
+
+                newItens.push(value);
+            });
+
+            $scope.total = $scope.total.toFixed(2);
+            return newItens;
+        };
+
+    }])
     .controller('adminGameCtrl', ['$scope', 'UploadFactory', '$location', '$upload', function($scope, UploadFactory, $location, $upload){
         $scope.game = 'GAME MMPRPG';
         $scope.tile = {};

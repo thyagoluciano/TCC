@@ -1,5 +1,5 @@
 angular.module('tccApp.controllers', ['tccApp.services'])
-    .controller('loginCtrl', ['$scope', 'ajaxService', '$location', function($scope, ajaxService, $location){
+    .controller('loginCtrl', ['$scope', 'UsuarioFactory', 'ajaxService', '$location', function($scope, UsuarioFactory, ajaxService, $location){
 
         $scope.logar = function(usuario){
 
@@ -15,4 +15,19 @@ angular.module('tccApp.controllers', ['tccApp.services'])
                 }
             });
         };
+
+        $scope.cadastrar = function(usuario){
+            UsuarioFactory.save(
+                {},
+                usuario,
+                function(data, status, headers, config){
+                    alert('Usuario Cadastrado com Sucesso!');
+                    $('#CadastrarModal').modal('hide');
+                    $('#logarModal').modal('show');
+                },
+                function(data , status, headers, config){
+                    console.log('Ocorreu um erro: ', data);
+                }
+            );
+        }
     }]);

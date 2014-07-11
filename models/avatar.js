@@ -136,6 +136,18 @@ exports.getByUser = function(req, res){
         }
     });
 };
+
+exports.getByName = function(req, res){
+    var name = req.params.name;
+
+    Avatar.findOne({name: name}).exec(function(err, avatar){
+        if(err){
+            console.log("Error: ", err);
+        }else{
+            res.json(avatar);
+        }
+    });
+};
 /**
  * Insere um Avatar no BD
  * @param req
@@ -144,6 +156,8 @@ exports.getByUser = function(req, res){
 exports.create = function(req, res){
     var data = req.body;
         data.attributes.level = 1;
+
+
 
     var dados = {
         user:       data.user,
@@ -181,6 +195,8 @@ exports.create = function(req, res){
 exports.update = function(req, res){
     var id = req.params.id;
     var data = req.body;
+
+    console.log(data);
 
     Avatar.update({_id: id}, data, function(err, data){
         if(err){

@@ -1,4 +1,21 @@
 angular.module('tccApp.services', ['ngResource'])
+    .factory('UsuarioFactory', function($resource){
+        return $resource(
+            '/api/users/:id', {
+                id: '@id'
+            },
+            {
+                update: {
+                    method: 'PUT',
+                    url: '/api/users/:id'
+                },
+                findById: {
+                    method: 'GET',
+                    url: '/api/users/:id'
+                }
+            }
+        );
+    })
     .factory('CategoriaFactory', function($resource){
         return $resource(
             '/api/categoria/:id', {
@@ -29,6 +46,40 @@ angular.module('tccApp.services', ['ngResource'])
                 findById: {
                     method: 'GET',
                     url: '/api/produto/:id'
+                }
+            }
+        );
+    })
+    .factory('PedidoFactory', function($resource){
+        return $resource(
+            '/api/pedido/:id', {
+                id: '@id'
+            },
+            {
+                update: {
+                    method: 'PUT',
+                    url: '/api/pedido/:id'
+                },
+                findById: {
+                    method: 'GET',
+                    url: '/api/pedido/:id'
+                }
+            }
+        );
+    })
+    .factory('AvatarFactory', function($resource){
+        return $resource(
+            '/api/avatar/:id', {
+                id: '@id'
+            },
+            {
+                update: {
+                    method: 'PUT',
+                    url: '/api/avatar/:id'
+                },
+                findById: {
+                    method: 'GET',
+                    url: '/api/avatar/:id'
                 }
             }
         );
@@ -116,5 +167,12 @@ angular.module('tccApp.services', ['ngResource'])
             }
 
         }
-    }]);;
+    }])
+    .factory('globalService', function($resource){
+        var objSrv = {}
+
+        return {
+            objSrv: objSrv
+        }
+    });
 

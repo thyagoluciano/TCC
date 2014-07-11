@@ -27,6 +27,7 @@
             return this.item.id;
         },
 
+
         death: function(remote){
             this.item.kill();
 

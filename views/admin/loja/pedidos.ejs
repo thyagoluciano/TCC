@@ -1,0 +1,87 @@
+<div class="contentwrapper"><!--Content wrapper-->
+
+    <div class="heading">
+
+        <h3>Listar Pedidos</h3>
+
+        <ul class="breadcrumb">
+            <li>Você está aqui:</li>
+            <li>
+                <a href="#" class="tip" title="back to dashboard">
+                    <span class="icon16 icomoon-icon-screen-2"></span>
+                </a>
+                <span class="divider">
+                    <span class="icon16 icomoon-icon-arrow-right-2"></span>
+                </span>
+            </li>
+            <li class="active">Listar Pedidos</li>
+        </ul>
+
+    </div>
+    <!-- End .heading-->
+
+    <!-- Build page from here: Usual with <div class="row-fluid"></div> -->
+
+    <div class="row-fluid">
+
+        <div class="span12">
+
+            <div class="box gradient">
+
+                <div class="title">
+                    <h4>
+                        <span>Listar Pedidos</span>
+                    </h4>
+                </div>
+                <div class="content noPad clearfix">
+                    <table data-ng-init="load()" cellpadding="0" cellspacing="0" border="0"
+                           class="responsive dynamicTable display table table-bordered" width="100%">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>E-MAIL</th>
+                            <th>AVATAR</th>
+                            <th>DATA</th>
+                            <th>CODE</th>
+                            <th>STATUS</th>
+                            <th>AÇÃO</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="odd gradeX" data-ng-repeat="row in pedidos">
+                            <td>{{$index}}</td>
+                            <td>{{row.user.email}}</td>
+                            <td>{{row.user.avatar.name}}</td>
+                            <td>{{row.pagseguro.checkout.date}}</td>
+                            <td>{{row.pagseguro.checkout.code}}</td>
+                            <td>{{row.status}}</td>
+                            <td>
+                                <div class="controls center">
+                                    <a href="manager#/loja/pedidos/visualizar/{{row._id}}" aria-describedby="qtip-17" data-hasqtip="true" title="" oldtitle="Edit task" href="javascript:void(0)" class="tip">
+                                        <span class="icon12 icomoon-icon-pencil"></span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+            </div>
+            <!-- End .box -->
+
+        </div>
+        <!-- End .span12 -->
+
+    </div>
+    <!-- End .row-fluid -->
+
+    <!-- Page end here -->
+    </div>
+
+</div><!-- End contentwrapper -->

@@ -45,6 +45,17 @@
                 _this.game._removeItem(data);
             })[_this];
 
+            //noinspection BadExpressionStatementJS
+            this.socket.on('item:use', function(data){
+                _this.game._useItem(data);
+            })[_this];
+
+            //noinspection BadExpressionStatementJS
+            this.socket.on('item:useRemote', function(data){
+                _this.game._useItemRemote(data);
+            })[_this];
+
+
         }
     }
 })();

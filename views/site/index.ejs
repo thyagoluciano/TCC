@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-ng-app="tccApp">
+	<head>
+
+		<meta charset="utf-8">
+		<title>Bootstrap Game</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<!-- CSS -->
+		<link rel="stylesheet" type="text/css" href="resource/css/bootstrap.css">
+		<link rel="stylesheet" type="text/css" href="resource/css/bootstrap-theme.css">
+		<link rel="stylesheet" type="text/css" href="resource/css/style2.css">
+		<link rel="stylesheet" type="text/css" href="resource/fonts.css">
+		<!-- JS -->
+		<!--<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>-->
+        <script type="text/javascript" src="resource/js/jquery.min.js"></script>
+		<script type="text/javascript" src="resource/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="resource/js/nav.js"></script>
+
+		<!-- FONTS -->
+		<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+	</head>
+	<body data-ng-controller="loginCtrl">
+
+		<div id="menu">
+			<nav>
+				<ul>
+					<li class="box-title">
+						<span class="left"></span>
+						<span class="titulo">MENU</span>
+						<span class="icon-cross fechar right ico"></span>
+					</li>
+				</ul>
+				<ul>
+					<li>
+						<a href="https://www.facebook.com/thyagolucianolabs"><span class="icon-facebook ico2"></span>Siga-nos no Facebook</a>
+					</li>
+					<li>
+						<a href="https://twitter.com/thyagoluciano"><span class="icon-twitter ico2"></span>Siga-nos no Twitter</a>
+					</li>
+				</ul>
+
+				<ul>
+					<li>
+						<a data-toggle="modal" href="#logarModal"><span class="icon-rocket ico2"></span>Logar</a>
+					</li>
+					<li>
+						<a data-toggle="modal" href="#CadastrarModal"><span class="icon-spinner ico2"></span>Cadastrar</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+		<div id="wrapper">
+			<header>
+				<div class="logo">
+					<img src="resource/img/logo.png">
+				</div>
+				<div class="menulist icon-menu"></div>
+				<div class="container">
+					<div class="row">
+						<ul id="redes-sociais" class="col-sm-5">
+							<li>
+								<a href="https://twitter.com/thyagoluciano" class="icon-twitter2"></a>
+							</li>
+							<li>
+								<a href="https://www.facebook.com/thyagolucianolabs" class="icon-facebook2"></a>
+							</li>
+							<li>
+								<button type="button" class="btn btn-default navbar-btn"  data-toggle="modal" href="#logarModal">
+									Logar
+								</button>
+							</li>
+							<li>
+								<button type="button" class="btn btn-default navbar-btn" data-toggle="modal" href="#CadastrarModal">
+									Cadastrar
+								</button>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</header>
+
+
+            <div data-ng-view>
+
+            </div>
+
+
+			<footer id="footer">
+				<nav class="navbar" role="navigation">
+  					<div class="container">
+    					<div class="row">
+    						<ul>
+    							<li>
+									<a href="https://twitter.com/thyagoluciano" class="icon-twitter2 icon"></a>
+								</li>
+								<li>
+									<a href="https://www.facebook.com/thyagolucianolabs" class="icon-facebook2 icon"></a>
+								</li>
+							</ul>
+    					</div>
+  					</div>
+				</nav>
+			</footer>
+            <!-- Button trigger modal -->
+
+            <!-- LOGIN MODAL -->
+            <div class="modal fade" id="logarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Logar</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <form class="form-horizontal" id="loginForm" name="loginForm">
+                                <div class="form-group">
+                                    <label for="emai" class="col-sm-2 control-label">Email</label>
+                                    <div class="col-sm-10">
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" data-ng-model="login.email" required>
+                                    </div>
+                                    <div ng-show="loginForm.email.$dirty && loginForm.email.$invalid" class="formValidacao">
+                                        <span class="erro" ng-show="loginForm.email.$error.required">Digite seu e-mail.</span>
+                                        <span class="erro" ng-show="loginForm.email.$error.email">Digite um e-mail válido.</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="senha" class="col-sm-2 control-label">Password</label>
+                                    <div class="col-sm-10">
+                                        <input type="password" class="form-control" id="senha" name="senha" placeholder="Password" data-ng-model="login.senha" data-ng-minlength="6" required>
+                                    </div>
+                                    <div ng-show="loginForm.senha.$dirty && loginForm.senha.$invalid" class="formValidacao">
+                                        <span class="erro" ng-show="loginForm.senha.$error.required">Digite sua senha.</span>
+                                        <span class="erro" ng-show="loginForm.senha.$error.minlength">A senha tem que ter 6 digitos ou mais!</span>
+                                        <span class="erro" ng-show="loginForm.senha.$error.minlength">Usuário ou Senha Inválido!</span>
+                                    </div>
+                                    <div ng-show="erro" class="formValidacao">
+                                        <span class="erro">Usuário ou Senha Inválido!</span>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="reset" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" data-ng-click="logar(login)" data-ng-disabled="loginForm.$invalid">Entrar</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
+            <div class="modal fade" id="CadastrarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Cadastrar</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <form class="form-horizontal" id="cadastrarForm" name="cadastrarForm">
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-2 control-label">Nome</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="Digite seu Nome" data-ng-model="user.name" required>
+                                    </div>
+                                    <div ng-show="cadastrarForm.name.$dirty && cadastrarForm.name.$invalid" class="formValidacao">
+                                        <span class="erro" ng-show="cadastrarForm.name.$error.required">Digite seu nome.</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="emai" class="col-sm-2 control-label">Email</label>
+                                    <div class="col-sm-10">
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" data-ng-model="user.email" required>
+                                    </div>
+                                    <div ng-show="cadastrarForm.email.$dirty && cadastrarForm.email.$invalid" class="formValidacao">
+                                        <span class="erro" ng-show="cadastrarForm.email.$error.required">Digite seu e-mail.</span>
+                                        <span class="erro" ng-show="cadastrarForm.email.$error.email">Digite um e-mail válido.</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="senha" class="col-sm-2 control-label">Password</label>
+                                    <div class="col-sm-10">
+                                        <input type="password" class="form-control" id="senha" name="senha" placeholder="Password" data-ng-model="user.senha" data-ng-minlength="6" required>
+                                    </div>
+                                    <div ng-show="cadastrarForm.senha.$dirty && cadastrarForm.senha.$invalid" class="formValidacao">
+                                        <span class="erro" ng-show="cadastrarForm.senha.$error.required">Digite sua senha.</span>
+                                        <span class="erro" ng-show="cadastrarForm.senha.$error.minlength">A senha tem que ter 6 digitos ou mais!</span>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="reset" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" data-ng-click="cadastrar(user)" data-ng-disabled="cadastrarForm.$invalid">Salvar</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+		</div>
+
+        <!-- AngularJS -->
+        <script type="text/javascript" src="/lib/angular/angular.min.js"></script>
+        <script type="text/javascript" src="/lib/angular-cookies/angular-cookies.min.js"></script>
+        <script type="text/javascript" src="/lib/angular-resource/angular-resource.min.js"></script>
+        <script type="text/javascript" src="/lib/angular-route/angular-route.min.js"></script>
+
+        <!-- Application -->
+        <script type="text/javascript" src="/js/app.js"></script>
+        <script type="text/javascript" src="/js/services.js"></script>
+        <script type="text/javascript" src="/js/controllers.js"></script>
+
+	</body>
+</html>

@@ -34,6 +34,16 @@ angular.module('tccApp', ['ngRoute', 'ngResource', 'tccApp.controllers'])
                 templateUrl: '/angular/admin/loja/frmProdutos',
                 controller: 'adminProdutosController'
             })
+            .when('/loja/pedidos', {
+                templateUrl: '/angular/admin/loja/pedidos',
+                controller: 'adminPedidosController'
+            })
+            .when('/loja/pedidos/visualizar/:id', {
+                templateUrl: '/angular/admin/loja/verpedido',
+                controller: 'adminPedidosController'
+            })
+
+
             // GAME
             .when('/game', {
                 templateUrl: '/angular/admin/game/categorias',

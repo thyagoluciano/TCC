@@ -127,56 +127,62 @@
                 <div class="modal-header" style="background: indianred; text-transform: uppercase">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <span class="glyphicon glyphicon-shopping-cart left ico"></span>
-                    <h4 class="modal-title">Comprar Itens - {{nome}}</h4>
+                    <h4 class="modal-title">Comprar Itens - {{qtd}} itens R${{total}}</h4>
                 </div>
 
 
                 <div class="modal-body">
 
-                    <div id="item">
-                        <li class="itens" data-ng-repeat="row in carrinho">
-                            <div class="avatar">
-                                <span style="width: 34px; height: 34px; margin: 0 auto; background: url({{row.tiled.file}}); background-position: -{{row.thumbs.x}}px -{{row.thumbs.y}}px; display: block"></span>
-                            </div>
-                            <div class="descricao-item">
-                                <h4>{{row.name}}</h4>
-                                <p>{{row.description}}</p>
-                            </div>
-                            <div class="preco">
-                                <a href="#" data-ng-click="dellCarrinho(row)">Remove<br/>R$ {{row.price.real}}</a>
-                            </div>
-                        </li>
+                    <div id="item" style="max-height: 400px; overflow: auto">
+                        <table class="table">
+                            <thead>
+                                <th>Icone</th>
+                                <th>Nome</th>
+                                <th>Quantidade</th>
+                                <th>Preço/Uni</th>
+                                <th>Ação</th>
+                            </thead>
+                            <tbody>
+                                <tr data-ng-repeat="row in carrinho">
+                                    <td><span style="width: 34px; height: 34px; margin: 0 auto; background: url({{row.tiled.file}}); background-position: -{{row.thumbs.x}}px -{{row.thumbs.y}}px; display: block"></span></td>
+                                    <td>{{row.name}}</td>
+                                    <td>{{row.qtd}}</td>
+                                    <td> {{row.price.real}}</td>
+                                    <td><a href="#" data-ng-click="removeItem(row)">Remover</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
                 </div>
                 <div class="modal-footer">
                     <button type="reset" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary" data-ng-click="logar(login)" data-ng-disabled="loginForm.$invalid">Entrar</button>
+                    <button type="submit" class="btn btn-primary" data-ng-click="finalizar()" data-ng-disabled="loginForm.$invalid">Finalizar Compra</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </div>
-<ul class="menu-3">
+<ul class="menu-3" data-ng-controller="storageCtrl">
     <li class="box-title">
         <span class="icon-spinner left ico"></span>
         <span class="titulo">Storage</span>
         <span class="icon-cross close3 right ico"></span>
     </li>
     <div id="item">
-        <li class="itens">
+        <li class="itens" data-ng-repeat="row in itens">
             <div class="avatar">
-                <img src="resource/img/logo.png">
+                <span style="width: 34px; height: 34px; margin: 0 auto; background: url({{row.tiled.file}}); background-position: -{{row.thumbs.x}}px -{{row.thumbs.y}}px; display: block"></span>
             </div>
             <div class="descricao-item">
-                <h4>TESTE</h4>
+                <h4>{{row.name}}</h4>
                 <p>
-                    Lorem ipsum dolor sit amet, serunt mollit anim id est laborum.
+                    {{row.description}}
                 </p>
             </div>
             <div class="preco">
-                <a href="">Vender<br/>R$ 10,00</a>
-                <a href="" class="usar">Usar</a>
+                <span>{{row.qtd}}</span>
+                <a href="#" class="usar" data-ng-click="usar(row)">Usar</a>
             </div>
         </li>
 

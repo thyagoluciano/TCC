@@ -62,7 +62,7 @@ module.exports = function(io){
 //         SOCKETS ITENS
         client.on('item:drop', onDropItem);
         client.on('item:remove', onRemoveItem);
-
+        client.on('item:use', onUseItem);
 
     });
 
@@ -89,17 +89,23 @@ module.exports = function(io){
     function onClientDisconnect() {
         util.log("Player has disconnected: " + this.id);
 
-        var tmpPlayer = playerById(this.id, players);
-        tmpPlayer.savePlayer(); // Salva as propriedades do player no banco de dados
+        var session = this.handshake.session;
 
-        var room = tmpPlayer.getRoom();
+        if(session.usuario.perfil.perfil === 'Administrador'){
 
-        // Remove o player do array players;
-        players.splice(players.indexOf(tmpPlayer), 1);
+        }else{
+            var tmpPlayer = playerById(this.id, players);
+            tmpPlayer.savePlayer(); // Salva as propriedades do player no banco de dados
 
-        // Remove o player do sala de jogo;
-        maps.getRoom(room).removePerson(tmpPlayer);
-        this.broadcast.to(room).emit('player:disconnect', { id: this.id });
+            var room = tmpPlayer.getRoom();
+
+            // Remove o player do array players;
+            players.splice(players.indexOf(tmpPlayer), 1);
+
+            // Remove o player do sala de jogo;
+            maps.getRoom(room).removePerson(tmpPlayer);
+            this.broadcast.to(room).emit('player:disconnect', { id: this.id });
+        }
     }
 
     // Metodos de inicialização
@@ -280,6 +286,24 @@ module.exports = function(io){
 
     function onRemoveItem(data){
         this.broadcast.to(data.room).emit('item:remove', { itemId: data.itemId });
+        this.emit('item:storage', { itemId: data.itemId });
+    }
+
+    function onUseItem(data){
+        var itens = maps.getRoom('praia').getItens();
+
+        console.log(itens.length);
+
+        var tmpItem;
+
+        for(var i = 0; i < itens.length; i++){
+            if(itens[i].item.tiledPosition === data.itemId){
+                tmpItem = itens[i];
+            }
+        }
+
+        this.emit('item:use', { itemId: data.itemId, item: tmpItem.getItem() });
+        this.broadcast.to('praia').emit('item:useRemote', { itemId: data.itemId, item: tmpItem.getItem(), playerId: this.id });
     }
 
     //    Find player by ID

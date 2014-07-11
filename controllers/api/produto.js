@@ -9,6 +9,9 @@ module.exports = function(app){
         get: function(req, res){
             ProdutoModel.get(req, res);
         },
+        findBy: function(req, res){
+            ProdutoModel.findBy(req, res);
+        },
         create: function(req, res){
             ProdutoModel.create(req, res);
         },

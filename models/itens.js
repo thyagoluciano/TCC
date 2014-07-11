@@ -81,6 +81,30 @@ exports.get = function(req, res){
         });
 };
 
+exports.findBy = function(req, res){
+    var id = req.params.id;
+
+    Itens
+        .findOne({tiledPosition: id}).exec(function(err, avatar){
+            if(err){
+                res.json(err);
+            }else{
+                res.json(avatar);
+            }
+        });
+};
+
+exports.getById = function(id){
+    Itens
+        .findOne({_id: id}).exec(function(err, avatar){
+            if(err){
+                res.json(err);
+            }else{
+                res.json(avatar);
+            }
+        });
+};
+
 /**
  * Insere uma nova categoria no Banco de Dados
  * @param req

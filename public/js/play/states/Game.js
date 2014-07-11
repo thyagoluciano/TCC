@@ -155,6 +155,17 @@
             tmpEnemy.battleAnimations(this.localPlayer, true);
         },
 
+        // ANIMAÇÃO DA BATALHA
+//        remoteAtackAnima: function(obj1, obj2){
+//
+//            console.log(obj1.id);
+//            var tmpEnemy = this.playerById(obj2.id, this.enemies);
+//            var tmpPlayer = this.playerById(obj1.id, this.remotePlayer);
+////
+//            tmpPlayer.battleAnimations(tmpEnemy);
+//            tmpEnemy.battleAnimations(tmpPlayer);
+//        },
+
         _create: function(data){
 
             // Renderiza o MAPA
@@ -333,6 +344,7 @@
          */
         // DROPA ITENS
         _dropItem: function(data){
+
             var tmpItem = new Itens(this.game, this.socket);
                 tmpItem.create(data, data.itemId);
 
@@ -342,6 +354,47 @@
         _removeItem: function(data){
             var tmpItem = this.playerById(data.itemId, this.itens);
                 tmpItem.item.kill();
+        },
+
+        _useItem: function(data){
+
+            switch (data.item.type.name){
+                case 'equip':
+                    if(this.localPlayer.user.equipment){
+                        this.localPlayer.user.equipment[data.item.spriteSheet.type] = {};
+                    }else{
+                        this.localPlayer.user.equipment = [];
+                    }
+
+                    this.localPlayer.user.equipment[data.item.spriteSheet.type] = data.item;
+                    this.localPlayer.trocaEquipPlayer();
+
+                    break;
+                case 'consumo':
+
+                    break;
+            }
+        },
+
+        _useItemRemote: function(data){
+
+            var remotePlayer = this.playerById(data.playerId, this.remotePlayer);
+
+            switch (data.item.type.name){
+                case 'equip':
+                    if(remotePlayer.user.equipment){
+                        remotePlayer.user.equipment[data.item.spriteSheet.type] = {};
+                    }else{
+                        remotePlayer.user.equipment = [];
+                    }
+
+                    remotePlayer.user.equipment[data.item.spriteSheet.type] = data.item;
+                    remotePlayer.trocaEquipPlayer();
+                    break;
+                case 'consumo':
+
+                    break;
+            }
         },
 
         // Find player by ID

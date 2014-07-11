@@ -14,7 +14,8 @@ var UserSchema  = new Schema({
     twitter: {},
     github: {},
     google: {},
-    linkedin: {}
+    linkedin: {},
+    perfil: {}
 });
 
 var User        = mongoose.model("User", UserSchema);
@@ -88,7 +89,11 @@ exports.create = function(req, res){
     var dados = {
         name:       data.name,
         email:      data.email,
-        password:   data.password
+        password:   data.senha,
+        perfil: {
+            _id: "53b030040f346b4332c097f9",
+            perfil: 'Cliente'
+        }
     };
 
     var user = new User(dados);
